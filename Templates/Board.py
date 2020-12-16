@@ -22,7 +22,7 @@ class Board:
     def render(self):
         y = self.top
         for i in range(self.height):
-            x = self.top
+            x = self.left
             for j in range(self.width):
                 pygame.draw.rect(self.screen, (255, 255, 255), (x, y, self.cell_size, self.cell_size), 1)
                 if self.board[i][j] == 1:
