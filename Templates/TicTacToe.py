@@ -71,9 +71,12 @@ class TicTacToeBoard(Board):
             y += self.cell_size
 
     def check_three(self, p1, p2, p3):
-        if self.board[p1[0]][p1[1]] == self.board[p2[0]][p2[1]] == self.board[p3[0]][p3[1]] != 0:
+        x1, y1 = p1
+        x2, y2 = p2
+        x3, y3 = p3
+        if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:
             self.working = False
-            self.won = 'red' if self.board[p1[0]][p1[1]] == 1 else 'blue'
+            self.won = 'red' if self.board[y1][x1] == 1 else 'blue'
 
     def check_win(self):
         for i in range(3):
@@ -91,13 +94,16 @@ class TicTacToeBoard(Board):
                 if self.working:
                     self.turn = 'blue' if self.turn == 'red' else 'red'
 
-    def set_win_text(self):
+    def set_win(self):
         if self.won:
-            font = pygame.font.Font(None, 150)
-            text = font.render(f"{self.won.capitalize()} wins!", True, (0, 0, 0))
-            text_x = (self.width * CELL_SIZE) // 2
-            text_y = (self.height * CELL_SIZE) // 2
-            self.screen.blit(text, (text_x, text_y))
+            pygame.display.set_caption(f'Крестики нолики ({self.won.upper()} ПОБЕДИЛ!)')
+
+    def restart(self):
+        self.won = None
+        self.working = True
+        self.board = [[0] * self.width for _ in range(self.height)]
+        self.turn = 'red'
+        pygame.display.set_caption('Крестики-нолики')
 
 
 if __name__ == '__main__':
@@ -111,7 +117,9 @@ if __name__ == '__main__':
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 board.get_click(event.pos)
+            if event.type == pygame.KEYDOWN:
+                board.restart()
         screen.fill(COLORS[board.turn])
         board.render()
-        board.set_win_text()
+        board.set_win()
         pygame.display.flip()
