@@ -3,7 +3,7 @@ import sys
 import pygame
 from Templates.Board import Board
 
-CELL_SIZE = 100
+CELL_SIZE = 200
 COLORS = {'red': (255, 102, 102),
           'blue': (0, 153, 255)}
 
