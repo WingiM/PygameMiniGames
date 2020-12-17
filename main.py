@@ -3,6 +3,14 @@ from itertools import cycle
 from Templates.TicTacToe import TicTacToeBoard
 from Templates.Sumo import SumoGame, Player
 
+
+def play_game(game, event):
+    if game == Sumo:
+        if event.key == pygame.K_w:
+            game.update(1)
+        elif event.key == pygame.K_UP:
+            game.update(2)
+
 # Объявление констант, определяющих работу игр
 FPS = 60
 CELL_SIZE = 100  # Для игр с клетчатым полем (17.12.2020 - TicTacToe)
@@ -44,11 +52,7 @@ if __name__ == '__main__':
                     game.restart()
                     game = next(GAMES)
                     pygame.display.set_caption(game.caption)
-                if game == Sumo:
-                    if event.key == pygame.K_w:
-                        game.update(1)
-                    elif event.key == pygame.K_UP:
-                        game.update(2)
+                play_game(game, event)
         game.render()
         clock.tick(FPS)
         pygame.display.flip()
