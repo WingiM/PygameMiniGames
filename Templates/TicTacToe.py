@@ -1,7 +1,6 @@
-import os
-import sys
 import pygame
 from Templates.Board import Board
+from Templates.load_image import load_image
 
 CELL_SIZE = 100
 COLORS = {'red': (255, 102, 102),
@@ -10,22 +9,6 @@ COLORS = {'red': (255, 102, 102),
 pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
-
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    if colorkey is not None:
-        image = image.convert()
-        if colorkey == -1:
-            colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey)
-    else:
-        image = image.convert_alpha()
-    return image
 
 
 class TicTacToeBoard(Board):
@@ -42,6 +25,7 @@ class TicTacToeBoard(Board):
                                              (self.cell_size - self.outline, self.cell_size - self.outline))
         self.working = True
         self.won = None
+        self.caption = 'Крестики-нолики'
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -54,6 +38,7 @@ class TicTacToeBoard(Board):
                                              (self.cell_size - self.outline, self.cell_size - self.outline))
 
     def render(self):
+        self.screen.fill(COLORS[self.turn])
         y = self.top
         for i in range(self.height):
             x = self.left
@@ -70,6 +55,7 @@ class TicTacToeBoard(Board):
                 pygame.draw.line(self.screen, (0, 0, 0), (self.left, y), (self.left + self.cell_size * self.width, y),
                                  self.outline)
             y += self.cell_size
+        self.set_win()
 
     def check_three(self, p1, p2, p3):
         x1, y1 = p1
@@ -108,20 +94,18 @@ class TicTacToeBoard(Board):
         pygame.display.set_caption('Крестики-нолики')
 
 
-if __name__ == '__main__':
-    pygame.display.set_caption('Крестики-нолики')
-    board = TicTacToeBoard(screen)
-    board.set_view((width - board.width * CELL_SIZE) // 2, (height - board.height * CELL_SIZE) // 2, CELL_SIZE)
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                board.get_click(event.pos)
-            if event.type == pygame.KEYDOWN:
-                board.restart()
-        screen.fill(COLORS[board.turn])
-        board.render()
-        board.set_win()
-        pygame.display.flip()
+# if __name__ == '__main__':
+#     pygame.display.set_caption('Крестики-нолики')
+#     board = TicTacToeBoard(screen)
+#     board.set_view((width - board.width * CELL_SIZE) // 2, (height - board.height * CELL_SIZE) // 2, CELL_SIZE)
+#     running = True
+#     while running:
+#         for event in pygame.event.get():
+#             if event.type == pygame.QUIT:
+#                 running = False
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 board.get_click(event.pos)
+#             if event.type == pygame.KEYDOWN:
+#                 board.restart()
+#         board.render()
+#         pygame.display.flip()
