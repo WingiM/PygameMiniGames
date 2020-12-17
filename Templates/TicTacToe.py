@@ -3,7 +3,7 @@ import sys
 import pygame
 from Templates.Board import Board
 
-CELL_SIZE = 200
+CELL_SIZE = 100
 COLORS = {'red': (255, 102, 102),
           'blue': (0, 153, 255)}
 
@@ -35,7 +35,7 @@ class TicTacToeBoard(Board):
     def __init__(self, screen):
         super().__init__(3, 3, screen)
         self.turn = 'red'
-        self.outline = 10
+        self.outline = self.cell_size // 10
         self.cross = pygame.transform.scale(TicTacToeBoard.cross,
                                             (self.cell_size - self.outline, self.cell_size - self.outline))
         self.nought = pygame.transform.scale(TicTacToeBoard.nought,
@@ -47,6 +47,7 @@ class TicTacToeBoard(Board):
         self.left = left
         self.top = top
         self.cell_size = cell_size
+        self.outline = self.cell_size // 10
         self.cross = pygame.transform.scale(TicTacToeBoard.cross,
                                             (self.cell_size - self.outline, self.cell_size - self.outline))
         self.nought = pygame.transform.scale(TicTacToeBoard.nought,
@@ -89,7 +90,8 @@ class TicTacToeBoard(Board):
         if cell:
             x, y = cell
             if not self.board[y][x]:
-                self.board[y][x] = 1 if self.turn == 'red' else 2
+                if self.working:
+                    self.board[y][x] = 1 if self.turn == 'red' else 2
                 self.check_win()
                 if self.working:
                     self.turn = 'blue' if self.turn == 'red' else 'red'
