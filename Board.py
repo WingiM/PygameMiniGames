@@ -40,7 +40,7 @@ class Board:
                 board_size_y - y) // self.cell_size
 
     def on_click(self, cell):
-        pass  # TODO что-то тут будет делаться потом
+        pass
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)

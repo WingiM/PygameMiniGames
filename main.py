@@ -1,9 +1,8 @@
 import pygame
 from itertools import cycle
-
 from constants import *  # Переносит все константы, использующиеся в проекте
-from Templates.TicTacToe import TicTacToeBoard
-from Templates.Sumo import SumoGame, Player, SUMO_field
+from TicTacToe import TicTacToeBoard
+from Sumo import SumoGame, Player, SUMO_field
 
 # Начало работы с pygame
 pygame.init()

@@ -1,12 +1,9 @@
 import pygame
-from Templates.Board import Board
-from Templates.load_image import load_image
+from Board import Board
+from load_image import load_image
+from load_sound import load_sound
+from constants import COLORS
 
-CELL_SIZE = 100
-COLORS = {'red': (255, 102, 102),
-          'blue': (0, 153, 255)}
-
-pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
 
@@ -14,6 +11,8 @@ screen = pygame.display.set_mode(size)
 class TicTacToeBoard(Board):
     cross = load_image('cross.png')
     nought = load_image('nought.png')
+    press_sound = load_sound('click.mp3')
+    win_sound = load_sound('ttt_win.mp3')
 
     def __init__(self, screen):
         super().__init__(3, 3, screen)
@@ -64,6 +63,7 @@ class TicTacToeBoard(Board):
         if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:
             self.working = False
             self.won = 'red' if self.board[y1][x1] == 1 else 'blue'
+            pygame.mixer.Sound.play(TicTacToeBoard.win_sound)
 
     def check_win(self):
         for i in range(3):
@@ -77,6 +77,7 @@ class TicTacToeBoard(Board):
             x, y = cell
             if not self.board[y][x]:
                 if self.working:
+                    pygame.mixer.Sound.play(TicTacToeBoard.press_sound)
                     self.board[y][x] = 1 if self.turn == 'red' else 2
                 self.check_win()
                 if self.working:
@@ -92,20 +93,3 @@ class TicTacToeBoard(Board):
         self.board = [[0] * self.width for _ in range(self.height)]
         self.turn = 'red'
         pygame.display.set_caption('Крестики-нолики')
-
-
-# if __name__ == '__main__':
-#     pygame.display.set_caption('Крестики-нолики')
-#     board = TicTacToeBoard(screen)
-#     board.set_view((width - board.width * CELL_SIZE) // 2, (height - board.height * CELL_SIZE) // 2, CELL_SIZE)
-#     running = True
-#     while running:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 running = False
-#             if event.type == pygame.MOUSEBUTTONDOWN:
-#                 board.get_click(event.pos)
-#             if event.type == pygame.KEYDOWN:
-#                 board.restart()
-#         board.render()
-#         pygame.display.flip()

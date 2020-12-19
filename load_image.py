@@ -1,9 +1,8 @@
 import os
 import sys
-
 import pygame
+from constants import LOAD_DIR
 
-LOAD_DIR = 'Templates/data'
 
 def load_image(name, colorkey=None):
     fullname = os.path.join(LOAD_DIR, name)
