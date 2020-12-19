@@ -3,15 +3,6 @@ from itertools import cycle
 from Templates.TicTacToe import TicTacToeBoard
 from Templates.Sumo import SumoGame, Player, SUMO_field
 
-
-def play_game(game, event):
-    if game == Sumo:
-        if event.key == pygame.K_w:
-            game.update(1)
-        elif event.key == pygame.K_UP:
-            game.update(2)
-
-
 # Объявление констант, определяющих работу игр
 FPS = 60
 CELL_SIZE = 100  # Для игр с клетчатым полем (17.12.2020 - TicTacToe)
@@ -37,7 +28,16 @@ Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
 # Цикл со всеми играми (временный)
 GAMES = cycle([TicTacToe, Sumo])
 
-if __name__ == '__main__':
+
+def play_game(game, event):
+    if game == Sumo:
+        if event.key == pygame.K_w:
+            game.update(1)
+        elif event.key == pygame.K_UP:
+            game.update(2)
+
+
+def start_game():
     game = next(GAMES)
     pygame.display.set_caption(game.caption)
     running = True
