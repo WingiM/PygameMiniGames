@@ -1,21 +1,18 @@
 import pygame
 from itertools import cycle
+
+from constants import *  # Переносит все константы, использующиеся в проекте
 from Templates.TicTacToe import TicTacToeBoard
 from Templates.Sumo import SumoGame, Player, SUMO_field
 
-# Объявление констант, определяющих работу игр
-FPS = 60
-CELL_SIZE = 100  # Для игр с клетчатым полем (17.12.2020 - TicTacToe)
-
 # Начало работы с pygame
 pygame.init()
-size = width, height = 800, 800
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
 
 # Настройка игры в крестики нолики
 TicTacToe = TicTacToeBoard(screen)
-TicTacToe.set_view((width - TicTacToe.width * CELL_SIZE) // 2, (height - TicTacToe.height * CELL_SIZE) // 2, CELL_SIZE)
+TicTacToe.set_view((WIDTH - TicTacToe.width * CELL_SIZE) // 2, (HEIGHT - TicTacToe.height * CELL_SIZE) // 2, CELL_SIZE)
 
 # Настройка игры в сумо
 SUMO_all_sprites = pygame.sprite.Group()
@@ -59,3 +56,7 @@ def start_game():
         game.render()
         clock.tick(FPS)
         pygame.display.flip()
+
+
+if __name__ == '__main__':
+    start_game()
