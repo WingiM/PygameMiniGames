@@ -1,7 +1,7 @@
 import pygame
 from itertools import cycle
 from Templates.TicTacToe import TicTacToeBoard
-from Templates.Sumo import SumoGame, Player
+from Templates.Sumo import SumoGame, Player, SUMO_field
 
 
 def play_game(game, event):
@@ -10,6 +10,7 @@ def play_game(game, event):
             game.update(1)
         elif event.key == pygame.K_UP:
             game.update(2)
+
 
 # Объявление констант, определяющих работу игр
 FPS = 60
@@ -27,8 +28,10 @@ TicTacToe.set_view((width - TicTacToe.width * CELL_SIZE) // 2, (height - TicTacT
 
 # Настройка игры в сумо
 SUMO_all_sprites = pygame.sprite.Group()
-SUMO_player1 = Player(SUMO_all_sprites, pos=(300, 150))
-SUMO_player2 = Player(SUMO_all_sprites, pos=(300, 450), transform=90)
+SUMO_all_sprites.add(SUMO_field)
+SUMO_PLAYER_X, SUMO_PLAYER1_Y, SUMO_PLAYER2_Y = 300, 190, 410
+SUMO_player1 = Player(SUMO_all_sprites, pos=(SUMO_PLAYER_X, SUMO_PLAYER1_Y))
+SUMO_player2 = Player(SUMO_all_sprites, pos=(SUMO_PLAYER_X, SUMO_PLAYER2_Y), transform=90)
 Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
 
 # Цикл со всеми играми (временный)
@@ -48,11 +51,11 @@ if __name__ == '__main__':
                 if event.key == pygame.K_SPACE:
                     game.restart()
                 elif event.key == pygame.K_RALT:
-                    screen.fill((0, 0, 0))
                     game.restart()
                     game = next(GAMES)
                     pygame.display.set_caption(game.caption)
                 play_game(game, event)
+        screen.fill((255, 255, 102))
         game.render()
         clock.tick(FPS)
         pygame.display.flip()

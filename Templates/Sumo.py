@@ -7,31 +7,48 @@ clock = pygame.time.Clock()
 pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
+FIELD_IMAGE = pygame.transform.scale(load_image('sumo_field.png'), (500, 500))
+SUMO_field = pygame.sprite.Sprite()
+SUMO_field.image = FIELD_IMAGE
+SUMO_field.rect = SUMO_field.image.get_rect()
+SUMO_field.rect.x, SUMO_field.rect.y = 150, 150
 
 
-class SumoGame(Board):
+class SumoGame(Board, pygame.sprite.Sprite):
     def __init__(self, screen, player1, player2, sprite_group):
         super().__init__(10, 10, screen)
         self.screen = screen
         self.p1, self.p2 = player1, player2
         self.sprite_group = sprite_group
         self.caption = 'Сумо'
+        self.win = False
 
     def render(self):
-        pygame.draw.circle(self.screen, 'yellow', (400, 400), 300)
         self.sprite_group.draw(screen)
 
     def update(self, player):
-        if player == 1:
-            self.p1.rect.y += 10
-            self.p2.rect.y += 10
-        else:
-            self.p2.rect.y -= 10
-            self.p1.rect.y -= 10
+        if not self.win:
+            collide = pygame.sprite.collide_mask(self.p1, self.p2)
+            if player == 1:
+                self.p1.rect = self.p1.rect.move(0, 30)
+                if collide:
+                    self.p2.rect = self.p2.rect.move(0, 30)
+                if not pygame.sprite.collide_rect(SUMO_field, self.p2):
+                    pygame.display.set_caption(f'Сумо (ПОБЕДИЛ ВЕРХНИЙ)')
+                    self.win = True
+            else:
+                self.p2.rect = self.p2.rect.move(0, -30)
+                if collide:
+                    self.p1.rect = self.p1.rect.move(0, -30)
+                if not pygame.sprite.collide_rect(SUMO_field, self.p1):
+                    pygame.display.set_caption(f'Сумо (ПОБЕДИЛ НИЖНИЙ)')
+                    self.win = True
 
     def restart(self):
         self.p1.rect.y = 150
         self.p2.rect.y = 450
+        self.win = False
+        pygame.display.set_caption('Сумо')
 
 
 class Player(pygame.sprite.Sprite):
@@ -43,6 +60,7 @@ class Player(pygame.sprite.Sprite):
             self.image = Player.image
         else:
             self.image = pygame.transform.rotate(Player.image, 90)
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
