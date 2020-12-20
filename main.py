@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 # Настройка игры в крестики нолики
 TicTacToe = TicTacToeBoard(screen)
-TicTacToe.set_view((WIDTH - TicTacToe.width * CELL_SIZE) // 2, (HEIGHT - TicTacToe.height * CELL_SIZE) // 2, CELL_SIZE)
+TicTacToe.set_view((WIDTH - TicTacToe.width * TTT_CELL_CIZE) // 2, (HEIGHT - TicTacToe.height * TTT_CELL_CIZE) // 2, TTT_CELL_CIZE)
 
 # Настройка игры в сумо
 SUMO_all_sprites = pygame.sprite.Group()

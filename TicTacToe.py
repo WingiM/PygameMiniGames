@@ -2,7 +2,7 @@ import pygame
 from Board import Board
 from load_image import load_image
 from load_sound import load_sound
-from constants import TTT_WIN_SOUND, TTT_CLICK_SOUND, COLORS
+from constants import TTT_WIN_SOUND, TTT_CLICK_SOUND, COLORS, WIDTH, HEIGHT
 
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
@@ -25,6 +25,7 @@ class TicTacToeBoard(Board):
         self.working = True
         self.won = None
         self.caption = 'Крестики-нолики'
+        self.won_cells = ()
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -64,6 +65,7 @@ class TicTacToeBoard(Board):
             self.working = False
             self.won = 'red' if self.board[y1][x1] == 1 else 'blue'
             pygame.mixer.Sound.play(TicTacToeBoard.win_sound)
+            self.won_cells = (p1, p3)
 
     def check_win(self):
         for i in range(3):
@@ -85,6 +87,29 @@ class TicTacToeBoard(Board):
 
     def set_win(self):
         if self.won:
+            x1, y1 = self.won_cells[0]
+            x2, y2 = self.won_cells[1]
+            if x1 == x2 and y1 != y2:
+                x1 = (WIDTH - self.width * self.cell_size) // 2 + x1 * self.cell_size + self.cell_size // 2
+                x2 = (WIDTH - self.width * self.cell_size) // 2 + x2 * self.cell_size + self.cell_size // 2
+                y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size
+                y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size
+            elif x1 != x2 and y1 == y2:
+                x1 = (WIDTH - self.width * self.cell_size) // 2 + x1 * self.cell_size
+                x2 = (WIDTH - self.width * self.cell_size) // 2 + x2 * self.cell_size + self.cell_size
+                y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size + self.cell_size // 2
+                y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size // 2
+            elif x1 != x2 and y1 != y2 and x2 > x1:
+                x1 = (WIDTH - self.width * self.cell_size) // 2 + x1 * self.cell_size
+                x2 = (WIDTH - self.width * self.cell_size) // 2 + x2 * self.cell_size + self.cell_size
+                y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size
+                y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size
+            else:
+                x1 = (WIDTH - self.width * self.cell_size) // 2 + x1 * self.cell_size + self.cell_size
+                x2 = (WIDTH - self.width * self.cell_size) // 2 + x2 * self.cell_size
+                y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size
+                y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size
+            pygame.draw.line(self.screen, (255, 255, 255), (x1, y1), (x2, y2), 6)
             pygame.display.set_caption(f'Крестики нолики ({self.won.upper()} ПОБЕДИЛ!)')
 
     def restart(self):
