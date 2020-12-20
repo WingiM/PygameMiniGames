@@ -26,6 +26,7 @@ class SumoGame(Board, pygame.sprite.Sprite):
         self.win = False
 
     def render(self):
+        self.screen.fill((255, 255, 102))
         self.sprite_group.draw(screen)
 
     def update(self, player):
