@@ -1,8 +1,8 @@
 import pygame
 from itertools import cycle
 from constants import *  # Переносит все константы, использующиеся в проекте
-from TicTacToe import TicTacToeBoard
-from Sumo import SumoGame, Player, SUMO_field
+from TicTacToe import TicTacToeBoard   # Поле для игры в крестики-нолики
+from Sumo import SumoGame, Player, SUMO_field  # Поле для игры в сумо, а также класс игрока
 
 # Начало работы с pygame
 pygame.init()
@@ -16,9 +16,8 @@ TicTacToe.set_view((WIDTH - TicTacToe.width * CELL_SIZE) // 2, (HEIGHT - TicTacT
 # Настройка игры в сумо
 SUMO_all_sprites = pygame.sprite.Group()
 SUMO_all_sprites.add(SUMO_field)
-SUMO_PLAYER_X, SUMO_PLAYER1_Y, SUMO_PLAYER2_Y = 300, 190, 410
-SUMO_player1 = Player(SUMO_all_sprites, pos=(SUMO_PLAYER_X, SUMO_PLAYER1_Y))
-SUMO_player2 = Player(SUMO_all_sprites, pos=(SUMO_PLAYER_X, SUMO_PLAYER2_Y), transform=90)
+SUMO_player1 = Player(SUMO_all_sprites, pos=SUMO_PLAYER1)
+SUMO_player2 = Player(SUMO_all_sprites, pos=SUMO_PLAYER2, transform=90)
 Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
 
 # Цикл со всеми играми (временный)
