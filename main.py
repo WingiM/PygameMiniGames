@@ -23,9 +23,9 @@ Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
 
 # Настройка игры в "Украсть бриллиант"
 STD_all_sprites = pygame.sprite.Group()
-diamond = Diamond(STD_all_sprites)
-hand1 = Hand(STD_all_sprites, number=1, diamond=diamond)
-hand2 = Hand(STD_all_sprites, number=2, diamond=diamond)
+STD_diamond = Diamond(STD_all_sprites)
+STD_hand1 = Hand(STD_all_sprites, number=1, diamond=STD_diamond)
+STD_hand2 = Hand(STD_all_sprites, number=2, diamond=STD_diamond)
 STD = StealTheDiamond(screen, STD_all_sprites)
 
 # Цикл со всеми играми (временный)
@@ -36,10 +36,13 @@ def play_game(game, event):
     if game == STD:
         if event.type == STD_EVENT_TYPE:
             game.update()
+            if game.active:
+                STD_hand1.can_move = True
+                STD_hand2.can_move = True
         if event.type == STD_HAND1_EVENT:
-            hand1.move()
+            STD_hand1.move()
         if event.type == STD_HAND2_EVENT:
-            hand2.move()
+            STD_hand2.move()
     if event.type == pygame.KEYDOWN:
         if game == Sumo:
             if event.key == pygame.K_w:
@@ -48,9 +51,9 @@ def play_game(game, event):
                 game.update(2)
         if game == STD:
             if event.key == pygame.K_w:
-                hand1.pressed()
+                STD_hand1.pressed()
             if event.key == pygame.K_UP:
-                hand2.pressed()
+                STD_hand2.pressed()
 
 
 def start_game():
@@ -67,8 +70,15 @@ def start_game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game.restart()
+                    if game == STD:
+                        STD_diamond.set_start_pos()
+                        STD_diamond.grabbed = False
+                        STD_hand1.can_move, STD_hand2.can_move = False, False
                 elif event.key == pygame.K_RALT:
                     game.restart()
+                    if game == STD:
+                        STD_diamond.set_start_pos()
+                        STD_diamond.grabbed = False
                     game = next(GAMES)
                     pygame.display.set_caption(game.caption)
         screen.fill((0, 0, 0))
