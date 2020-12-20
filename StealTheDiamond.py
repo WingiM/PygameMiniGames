@@ -97,7 +97,7 @@ class Hand(pygame.sprite.Sprite):
         if pygame.sprite.collide_mask(self, self.diamond) and not self.diamond.grabbed and self.can_move:
             pygame.mixer.Sound.play(Hand.snatch)
             self.speed = -STD_HAND_SPEED
-            self.diamond.move(self.speed * 2)
+            self.diamond.move(STD_HAND_SPEED * 2 if self.number == 2 else -STD_HAND_SPEED * 2)
         if self.number == 1:
             if self.rect.x >= 200:
                 self.speed = -STD_HAND_SPEED
@@ -107,7 +107,7 @@ class Hand(pygame.sprite.Sprite):
                 pygame.time.set_timer(self.event, 0)
         else:
             if self.rect.x <= 400:
-                self.speed = -STD_HAND_SPEED
+                self.speed = STD_HAND_SPEED
             if self.rect.x > 650:
                 self.speed = 0
                 self.rect.x = 650
