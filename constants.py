@@ -9,7 +9,7 @@ COLORS = {'red': (255, 102, 102),
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
 TTT_WIN_SOUND = 'ttt_win.mp3'
-TTT_CELL_CIZE = 200
+TTT_CELL_CIZE = 100
 
 # Константы для игры в сумо
 SUMO_WIN_SOUND = 'sumo_victory.mp3'

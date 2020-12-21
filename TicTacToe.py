@@ -109,7 +109,7 @@ class TicTacToeBoard(Board):
                 x2 = (WIDTH - self.width * self.cell_size) // 2 + x2 * self.cell_size
                 y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size
                 y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size
-            pygame.draw.line(self.screen, (255, 255, 255), (x1, y1), (x2, y2), 6)
+            pygame.draw.line(self.screen, (255, 255, 255), (x1, y1), (x2, y2), self.outline)
             pygame.display.set_caption(f'Крестики нолики ({self.won.upper()} ПОБЕДИЛ!)')
 
     def restart(self):
