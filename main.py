@@ -4,6 +4,7 @@ from constants import *  # Переносит все константы, исп�
 from TicTacToe import TicTacToeBoard   # Поле для игры в крестики-нолики
 from Sumo import SumoGame, Player, SUMO_field  # Поле для игры в сумо, а также класс игрока
 from StealTheDiamond import StealTheDiamond, Hand, Diamond
+from AirHockey import Stick, Puck
 
 # Начало работы с pygame
 pygame.init()
@@ -28,6 +29,10 @@ STD_hand1 = Hand(STD_all_sprites, number=1, diamond=STD_diamond)
 STD_hand2 = Hand(STD_all_sprites, number=2, diamond=STD_diamond)
 STD = StealTheDiamond(screen, STD_all_sprites)
 
+# Настройка игры в Аэро Хоккей
+AH_stick1 = Stick(AH_STICK1X, AH_STICK1Y)
+AH_stick2 = Stick(AH_STICK2X, AH_STICK2Y)
+AH_puck = Puck(WIDTH // 2, HEIGHT // 2)
 # Цикл со всеми играми (временный)
 GAMES = cycle([STD, TicTacToe, Sumo])
 
