@@ -14,11 +14,10 @@ SUMO_field.rect = SUMO_field.image.get_rect()
 SUMO_field.rect.x, SUMO_field.rect.y = 150, 150
 
 
-class SumoGame(Board, pygame.sprite.Sprite):
+class SumoGame:
     win_sound = load_sound(SUMO_WIN_SOUND)
 
     def __init__(self, screen, player1, player2, sprite_group):
-        super().__init__(10, 10, screen)
         self.screen = screen
         self.p1, self.p2 = player1, player2
         self.sprite_group = sprite_group

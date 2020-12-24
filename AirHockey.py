@@ -1,17 +1,85 @@
 import pygame
-import random as r
 import math
 import constants as cn
 
+pygame.init()
+screen = pygame.display.set_mode(cn.SIZE)
+clock = pygame.time.Clock()
+
+
+class AirHockey:
+    def __init__(self, screen, color, stick1, stick2, puck):
+        self.screen = screen
+        self.color = color
+        self.s1 = stick1
+        self.s2 = stick2
+        self.puck = puck
+        self.caption = 'Аэро хоккей'
+
+    def render(self):
+        self.screen.fill(self.color)
+        pygame.draw.circle(self.screen, 'white', (cn.WIDTH // 2, cn.HEIGHT // 2), 70, 5)
+        pygame.draw.rect(self.screen, 'black', (0, 0, cn.WIDTH, cn.HEIGHT), 5)
+        pygame.draw.rect(self.screen, 'white', (0, cn.HEIGHT // 2 - 150, 150, 300), 5)
+        pygame.draw.rect(self.screen, 'white', (cn.WIDTH - 150, cn.HEIGHT // 2 - 150, 150, 300), 5)
+        pygame.draw.rect(self.screen, 'black', (0, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        pygame.draw.rect(self.screen, 'black', (cn.WIDTH - 5, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        pygame.draw.rect(self.screen, 'white', (cn.WIDTH // 2, 0, 3, cn.HEIGHT))
+        self.s1.draw(self.screen)
+        self.s2.draw(self.screen)
+        self.puck.draw(self.screen)
+
+    def restart(self):
+        self.puck.reset()
+        self.s1.reset(cn.AH_STICK1X, cn.AH_STICK1Y)
+        self.s2.reset(cn.AH_STICK2X, cn.AH_STICK2Y)
+
+    def goal(self):
+        return ((self.puck.x - self.puck.radius <= 0)
+                and (self.puck.y >= cn.AH_GOAL_Y1)
+                and (self.puck.y <= cn.AH_GOAL_Y2)) \
+               or ((self.puck.x + self.puck.radius >= cn.WIDTH)
+                   and (self.puck.y >= cn.AH_GOAL_Y1) and (self.puck.y <= cn.AH_GOAL_Y2))
+
 
 class Stick:
-    def __init__(self, x, y):
+    def __init__(self, color, x, y):
         self.x = x
+        self.color = color
         self.y = y
         self.radius = cn.AH_STICK_RADIUS
         self.speed = cn.AH_STICK_SPEED
         self.mass = cn.AH_STICK_MASS
         self.angle = 0
+
+    def check_vertical(self):
+        if self.y - self.radius <= 0:
+            self.y = self.radius
+        elif self.y + self.radius > cn.HEIGHT:
+            self.y = cn.HEIGHT - self.radius
+
+    def check_left(self):
+        if self.x - self.radius <= 0:
+            self.x = self.radius
+        elif self.x + self.radius > cn.WIDTH // 2:
+            self.x = cn.WIDTH // 2 - self.radius
+
+    def check_right(self):
+        if self.x + self.radius > cn.WIDTH:
+            self.x = cn.WIDTH - self.radius
+        elif self.x - self.radius < cn.WIDTH // 2:
+            self.x = cn.WIDTH // 2 + self.radius
+
+    def draw(self, screen):
+        pos = (int(self.x), int(self.y))
+        pygame.draw.circle(screen, self.color, pos, self.radius, 0)
+        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius, 2)
+        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 5, 2)
+        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 10, 2)
+
+    def reset(self, x, y):
+        self.x = x
+        self.y = y
 
     def move(self, up, down, left, right, time):
         dx, dy = self.x, self.y
@@ -29,8 +97,9 @@ class Stick:
 
 
 class Puck:
-    def __init__(self, x, y):
+    def __init__(self, color, x, y):
         self.x, self.y = x, y
+        self.color = color
         self.radius = cn.AH_PUCK_RADIUS
         self.speed = cn.AH_PUCK_SPEED
         self.mass = cn.AH_PUCK_MASS
@@ -40,7 +109,28 @@ class Puck:
         self.x += math.sin(self.angle) * self.speed * time
         self.y -= math.cos(self.angle) * self.speed * time
 
-        self.speed *= cn.AH_FRICTION  # TODO: попробовать без трения
+        self.speed *= cn.AH_FRICTION
+
+    def reset(self):
+        self.angle = 0
+        self.speed = cn.AH_PUCK_SPEED
+        self.x = cn.WIDTH // 2
+        self.y = cn.HEIGHT // 2
+
+    def check(self):
+        if self.x + self.radius > cn.WIDTH:
+            self.x = 2 * (cn.WIDTH - self.radius) - self.x
+            self.angle = -self.angle
+        elif self.x - self.radius < 0:
+            self.x = 2 * self.radius - self.x
+            self.angle = -self.angle
+
+        if self.y + self.radius > cn.HEIGHT:
+            self.y = 2 * (cn.HEIGHT - self.radius) - self.y
+            self.angle = math.pi - self.angle
+        elif self.y - self.radius < 0:
+            self.y = 2 * self.radius - self.y
+            self.angle = math.pi - self.angle
 
     @staticmethod
     def add_vector(angle1, len1, angle2, len2):
@@ -82,8 +172,7 @@ class Puck:
         return True
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (255, 255, 255), (int(self.x), int(self.y)), self.radius)
-        # TODO: поменять цвета
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
 
     def get_pos(self):
         return self.x, self.y

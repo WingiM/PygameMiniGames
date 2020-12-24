@@ -1,6 +1,5 @@
 import pygame
 import random
-from Board import Board
 from load_image import load_image
 from load_sound import load_sound
 from constants import STD_TIME_RANGE, STD_DELAY, STD_EVENT_TYPE, \
@@ -12,12 +11,11 @@ size = width, height = WIDTH, HEIGHT
 screen = pygame.display.set_mode(size)
 
 
-class StealTheDiamond(Board):
+class StealTheDiamond:
     bell = load_sound('bell.mp3')
     rewind = load_sound('restart.mp3')
 
     def __init__(self, screen, sprites):
-        super().__init__(10, 10, screen)
         self.screen = screen
         self.time_range = STD_TIME_RANGE
         self.caption = 'Украсть бриллиант'
@@ -97,7 +95,7 @@ class Hand(pygame.sprite.Sprite):
         if pygame.sprite.collide_mask(self, self.diamond) and not self.diamond.grabbed and self.can_move:
             pygame.mixer.Sound.play(Hand.snatch)
             self.speed = -STD_HAND_SPEED
-            self.diamond.move(STD_HAND_SPEED * 2 if self.number == 2 else -STD_HAND_SPEED * 2)
+            self.diamond.move(WIDTH // 2 if self.number == 2 else -WIDTH // 2)
         if self.number == 1:
             if self.rect.x >= 200:
                 self.speed = -STD_HAND_SPEED

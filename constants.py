@@ -4,7 +4,10 @@ FPS = 60
 SOUND_DIR = 'Sounds'
 LOAD_DIR = 'data'
 COLORS = {'red': (255, 102, 102),
-          'blue': (0, 153, 255)}
+          'blue': (0, 153, 255),
+          'white': (255, 255, 255),
+          'green': (102, 204, 0),
+          'orange': (255, 102, 51)}
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
@@ -33,9 +36,16 @@ AH_STICK_MASS = 2000
 AH_PUCK_RADIUS = 30
 AH_PUCK_SPEED = 450
 AH_PUCK_MASS = 500
-AH_FRICTION = 0.99
+AH_FRICTION = 0.998
 AH_SPEED_LIMIT = 1500
 AH_STICK1X = 20
 AH_STICK1Y = HEIGHT // 2
 AH_STICK2X = WIDTH - 20
 AH_STICK2Y = HEIGHT // 2
+AH_GOAL_WIDTH = 180
+AH_GOAL_Y1 = HEIGHT // 2 - AH_GOAL_WIDTH // 2
+AH_GOAL_Y2 = HEIGHT // 2 + AH_GOAL_WIDTH // 2
+AH_STICK1_COLOR = COLORS['red']
+AH_STICK2_COLOR = COLORS['blue']
+AH_FIELD_COLOR = COLORS['green']
+AH_PUCK_COLOR = COLORS['orange']
