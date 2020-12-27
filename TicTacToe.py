@@ -46,10 +46,11 @@ class TicTacToeBoard(Board):
             for j in range(self.width):
                 pygame.draw.rect(self.screen, COLORS[self.turn], (x, y, self.cell_size, self.cell_size), self.outline)
                 if x != self.left:
-                    pygame.draw.line(self.screen, (0, 0, 0), (x, y), (x, y + self.cell_size), self.outline)
-                if self.board[i][j] == 1:
+                    pygame.draw.line(self.screen, (0, 0, 0), (x, y), (x, y + self.cell_size),
+                                     self.outline)  # Рисует поле
+                if self.board[i][j] == 1:  # Рисует крестик
                     self.screen.blit(self.cross, (x + self.outline // 2, y + self.outline // 2))
-                if self.board[i][j] == 2:
+                if self.board[i][j] == 2:  # Рисует нолик
                     self.screen.blit(self.nought, (x + self.outline // 2, y + self.outline // 2))
                 x += self.cell_size
             if y != self.top:
@@ -65,13 +66,13 @@ class TicTacToeBoard(Board):
         x1, y1 = p1
         x2, y2 = p2
         x3, y3 = p3
-        if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:
+        if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:  # Если равны, то есть победитель
             self.working = False
             self.won = 'red' if self.board[y1][x1] == 1 else 'blue'
             pygame.mixer.Sound.play(TicTacToeBoard.win_sound)
             self.won_cells = (p1, p3)
 
-    def check_win(self):
+    def check_win(self):  # Проверка победителя или ничьи (все возможные комбинации)
         c = 0
         for i in range(3):
             self.check_three((i, 0), (i, 1), (i, 2))
@@ -101,7 +102,7 @@ class TicTacToeBoard(Board):
                 if self.working:
                     self.turn = 'blue' if self.turn == 'red' else 'red'
 
-    def set_win(self):
+    def set_win(self):  # Рисует линии победителей
         x1, y1 = self.won_cells[0]
         x2, y2 = self.won_cells[1]
         if x1 == x2 and y1 != y2:

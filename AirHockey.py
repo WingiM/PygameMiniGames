@@ -1,3 +1,6 @@
+# Первый игрок перемещается кнопками WASD, второй стрелочками
+
+from load_sound import load_sound
 import pygame
 import math
 import constants as cn
@@ -8,23 +11,32 @@ clock = pygame.time.Clock()
 
 
 class AirHockey:
+    goal_sound = load_sound('goal.wav')
+    hit_sound = load_sound('hit.wav')
+
     def __init__(self, screen, color, stick1, stick2, puck):
         self.screen = screen
         self.color = color
         self.s1 = stick1
         self.s2 = stick2
         self.puck = puck
-        self.caption = 'Аэро хоккей'
+        self.caption = 'Аэрохоккей'
 
     def render(self):
         self.screen.fill(self.color)
+        # Центральный круг
         pygame.draw.circle(self.screen, 'white', (cn.WIDTH // 2, cn.HEIGHT // 2), 70, 5)
+        # Границы поля
         pygame.draw.rect(self.screen, 'black', (0, 0, cn.WIDTH, cn.HEIGHT), 5)
+        # "Штрафные" зоны
         pygame.draw.rect(self.screen, 'white', (0, cn.HEIGHT // 2 - 150, 150, 300), 5)
         pygame.draw.rect(self.screen, 'white', (cn.WIDTH - 150, cn.HEIGHT // 2 - 150, 150, 300), 5)
+        # Ворота
         pygame.draw.rect(self.screen, 'black', (0, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
         pygame.draw.rect(self.screen, 'black', (cn.WIDTH - 5, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        # Разделяющая полоса
         pygame.draw.rect(self.screen, 'white', (cn.WIDTH // 2, 0, 3, cn.HEIGHT))
+        # Прорисовка клюшек и шайбы
         self.s1.draw(self.screen)
         self.s2.draw(self.screen)
         self.puck.draw(self.screen)
@@ -34,7 +46,7 @@ class AirHockey:
         self.s1.reset(cn.AH_STICK1X, cn.AH_STICK1Y)
         self.s2.reset(cn.AH_STICK2X, cn.AH_STICK2Y)
 
-    def goal(self):
+    def goal(self):  # Проверка на попадание в ворота
         return ((self.puck.x - self.puck.radius <= 0)
                 and (self.puck.y >= cn.AH_GOAL_Y1)
                 and (self.puck.y <= cn.AH_GOAL_Y2)) \
@@ -42,7 +54,7 @@ class AirHockey:
                    and (self.puck.y >= cn.AH_GOAL_Y1) and (self.puck.y <= cn.AH_GOAL_Y2))
 
 
-class Stick:
+class Stick:  # Клюшки
     def __init__(self, color, x, y):
         self.x = x
         self.color = color
@@ -52,19 +64,19 @@ class Stick:
         self.mass = cn.AH_STICK_MASS
         self.angle = 0
 
-    def check_vertical(self):
+    def check_vertical(self):  # Проверка выхода за границы экрана сверху и снизу
         if self.y - self.radius <= 0:
             self.y = self.radius
         elif self.y + self.radius > cn.HEIGHT:
             self.y = cn.HEIGHT - self.radius
 
-    def check_left(self):
+    def check_left(self):  # Проверка для левой клюшки
         if self.x - self.radius <= 0:
             self.x = self.radius
         elif self.x + self.radius > cn.WIDTH // 2:
             self.x = cn.WIDTH // 2 - self.radius
 
-    def check_right(self):
+    def check_right(self):  # Проверка для правой клюшки
         if self.x + self.radius > cn.WIDTH:
             self.x = cn.WIDTH - self.radius
         elif self.x - self.radius < cn.WIDTH // 2:
@@ -88,15 +100,12 @@ class Stick:
         dx, dy = self.x - dx, self.y - dy
         self.angle = math.atan2(dy, dx)
 
-    def get_pos(self):
-        return self.x, self.y
-
     def set_pos(self, x, y):
         self.x = x
         self.y = y
 
 
-class Puck:
+class Puck:  # Шайба
     def __init__(self, color, x, y):
         self.x, self.y = x, y
         self.color = color
@@ -133,19 +142,21 @@ class Puck:
             self.angle = math.pi - self.angle
 
     @staticmethod
-    def add_vector(angle1, len1, angle2, len2):
+    def add_vector(angle1, len1, angle2, len2):  # Вектора движения
         x = math.sin(angle1) * len1 + math.sin(angle2) * len2
         y = math.cos(angle1) * len1 + math.cos(angle2) * len2
         len0 = math.hypot(x, y)
         angle = math.pi / 2 - math.atan2(y, x)
         return angle, len0
 
-    def check_collision(self, stick):
+    def check_collision(self, stick):  # Проверка на столкновение с клюшкой
         dx = self.x - stick.x
         dy = self.y - stick.y
-        distance = math.hypot(dx, dy)
+        distance = math.hypot(dx, dy)  # Расстояние между центрами окружностей клюшки и шайбы
         if distance > self.radius + stick.radius:
-            return False
+            return False  # Столкновения нет
+
+        # Рассчет угла отражения
         tan = math.atan2(dy, dx)
         temp_angle = math.pi / 2 + tan
         total_mass = self.mass + stick.mass
@@ -155,7 +166,7 @@ class Puck:
 
         (self.angle, self.speed) = self.add_vector(*vector1, *vector2)
 
-        self.speed = min(self.speed, cn.AH_SPEED_LIMIT)
+        self.speed = min(self.speed, cn.AH_SPEED_LIMIT)  # Скорость не должна быть выше максимальной
 
         vector1 = (stick.angle, stick.speed * (stick.mass - self.mass) / total_mass)
         vector2 = (temp_angle + math.pi, 2 * self.speed * self.mass / total_mass)
@@ -164,6 +175,7 @@ class Puck:
         stick.angle, stick.speed = self.add_vector(*vector1, *vector2)
         stick.speed = temp_speed
 
+        # Во избежание "прилипания" клюшек и шайбы
         offset = 0.5 * (self.radius + stick.radius - distance + 1)
         self.x += math.sin(temp_angle) * offset
         self.y -= math.cos(temp_angle) * offset

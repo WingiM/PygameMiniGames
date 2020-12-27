@@ -1,3 +1,6 @@
+# Суть игры заключается в том, чтобы как можно быстрее вовремя нажать кнопку движения руки, тем самым украв бриллиант
+# Игрок, который первым взял бриллиант, побеждает. Управление - клавишы W и UP
+
 import pygame
 import random
 from load_image import load_image
@@ -15,10 +18,13 @@ class StealTheDiamond:
     bell = load_sound('bell.mp3')
     rewind = load_sound('restart.mp3')
 
-    def __init__(self, screen, sprites):
+    def __init__(self, screen, sprites, p1, p2, diamond):
         self.screen = screen
         self.time_range = STD_TIME_RANGE
         self.caption = 'Украсть бриллиант'
+        self.p1 = p1
+        self.p2 = p2
+        self.diamond = diamond
         self.sprites = sprites
         self.active = False
         self.time = random.randint(*self.time_range)
@@ -45,6 +51,9 @@ class StealTheDiamond:
         self.active = False
         self.time = random.randint(*self.time_range)
         pygame.time.set_timer(STD_EVENT_TYPE, self.delay)
+        self.diamond.set_start_pos()
+        self.diamond.grabbed = False
+        self.p1.can_move, self.p2.can_move = False, False
 
 
 class Diamond(pygame.sprite.Sprite):
@@ -63,7 +72,7 @@ class Diamond(pygame.sprite.Sprite):
         self.rect = self.rect.move(speed, 0)
         self.grabbed = True
 
-    def set_start_pos(self):
+    def set_start_pos(self):  # Восстановление позиции бриллианта
         self.rect.x = WIDTH // 2 - self.image.get_width() // 2
         self.rect.y = HEIGHT // 2 - self.image.get_width() // 2
 
@@ -91,7 +100,7 @@ class Hand(pygame.sprite.Sprite):
             self.speed = STD_HAND_SPEED if self.number == 1 else -STD_HAND_SPEED
             pygame.time.set_timer(self.event, self.delay)
 
-    def check_collision(self):
+    def check_collision(self):  # Проверяет столкновения с алмазом
         if pygame.sprite.collide_mask(self, self.diamond) and not self.diamond.grabbed and self.can_move:
             pygame.mixer.Sound.play(Hand.snatch)
             self.speed = -STD_HAND_SPEED

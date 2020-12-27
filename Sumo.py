@@ -1,5 +1,7 @@
+# Суть игры заключается в том, чтобы вытеснить своего оппонента за игровое поле
+# Управление - клавишы W и UP
+
 import pygame
-from Board import Board
 from load_image import load_image
 from load_sound import load_sound
 from constants import SUMO_WIN_SOUND, SUMO_MOVES
@@ -30,21 +32,21 @@ class SumoGame:
 
     def update(self, player):
         if not self.win:
-            collide = pygame.sprite.collide_mask(self.p1, self.p2)
+            collide = pygame.sprite.collide_mask(self.p1, self.p2)  # Сталкиваются ли игроки друг с другом
             if player == 1:
                 self.p1.rect = self.p1.rect.move(*SUMO_MOVES)
                 if collide:
                     self.p2.rect = self.p2.rect.move(*SUMO_MOVES)
-                if not pygame.sprite.collide_rect(SUMO_field, self.p2):
-                    pygame.display.set_caption(f'Сумо (ПОБЕДИЛ ВЕРХНИЙ)')
+                if not pygame.sprite.collide_rect(SUMO_field, self.p2):  # Не вышел ли игрок за пределы поля
+                    self.caption = f'Сумо (ПОБЕДИЛ ИГРОК 1)'
                     self.win = True
                     pygame.mixer.Sound.play(SumoGame.win_sound)
             else:
                 self.p2.rect = self.p2.rect.move(*map(lambda x: -x, SUMO_MOVES))
                 if collide:
                     self.p1.rect = self.p1.rect.move(*map(lambda x: -x, SUMO_MOVES))
-                if not pygame.sprite.collide_rect(SUMO_field, self.p1):
-                    pygame.display.set_caption(f'Сумо (ПОБЕДИЛ НИЖНИЙ)')
+                if not pygame.sprite.collide_rect(SUMO_field, self.p1):  # Не вышел ли игрок за пределы поля
+                    self.caption = f'Сумо (ПОБЕДИЛ ИГРОК 2)'
                     self.win = True
                     pygame.mixer.Sound.play(SumoGame.win_sound)
 
@@ -52,7 +54,7 @@ class SumoGame:
         self.p1.rect.x, self.p1.rect.y = self.p1.pos
         self.p2.rect.x, self.p2.rect.y = self.p2.pos
         self.win = False
-        pygame.display.set_caption('Сумо')
+        self.caption = 'Сумо'
 
 
 class Player(pygame.sprite.Sprite):
@@ -61,9 +63,9 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, *group, pos, transform=None):
         super(Player, self).__init__(*group)
         if not transform:
-            self.image = Player.image
+            self.image = pygame.transform.rotate(Player.image, 180)
         else:
-            self.image = pygame.transform.rotate(Player.image, 90)
+            self.image = Player.image
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.pos = pos

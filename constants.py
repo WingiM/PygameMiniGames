@@ -1,27 +1,27 @@
 # Объявление констант, определяющих работу игр
 SIZE = WIDTH, HEIGHT = 800, 800
-FPS = 60
+FPS = 120
 SOUND_DIR = 'Sounds'
 LOAD_DIR = 'data'
 COLORS = {'red': (255, 102, 102),
           'blue': (0, 153, 255),
           'white': (255, 255, 255),
           'green': (102, 204, 0),
-          'orange': (255, 102, 51)}
+          'orange': (255, 102, 51)}  # Цвета, используемые в играх
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
 TTT_WIN_SOUND = 'ttt_win.mp3'
-TTT_CELL_CIZE = 100
+TTT_CELL_SIZE = 100
 
 # Константы для игры в сумо
 SUMO_WIN_SOUND = 'sumo_victory.mp3'
 SUMO_PLAYER1 = (300, 190)
 SUMO_PLAYER2 = (300, 410)
-SUMO_MOVES = (0, 30)  # Перемещение в сумо по оси x и y соответственно
+SUMO_MOVES = (0, 30)  # Перемещение игроков по оси x и y соответственно
 
 # Константы для игры в "Украсть бриллиант"
-STD_TIME_RANGE = (2000, 4000)  # От 2х до 6и миллисекунд
+STD_TIME_RANGE = (2000, 4000)  # От 2х до 6и секунд
 STD_DELAY = 100
 STD_EVENT_TYPE = 32775
 STD_HAND1_EVENT = 32776
@@ -34,7 +34,7 @@ AH_STICK_RADIUS = 40
 AH_STICK_SPEED = 400
 AH_STICK_MASS = 2000
 AH_PUCK_RADIUS = 30
-AH_PUCK_SPEED = 450
+AH_PUCK_SPEED = 1000  # Рекомендуется задавать начальную скорость не равную нулю во избежание нечестной игры
 AH_PUCK_MASS = 500
 AH_FRICTION = 0.998
 AH_SPEED_LIMIT = 1500
