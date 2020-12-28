@@ -64,7 +64,7 @@ class Diamond(pygame.sprite.Sprite):
         self.image = Diamond.image
         self.rect = self.image.get_rect()
         self.rect.x = WIDTH // 2 - self.image.get_width() // 2
-        self.rect.y = HEIGHT // 2 - self.image.get_width() // 2
+        self.rect.y = HEIGHT // 2 - self.image.get_height() // 2
         self.mask = pygame.mask.from_surface(self.image)
         self.grabbed = False
 
@@ -106,14 +106,14 @@ class Hand(pygame.sprite.Sprite):
             self.speed = -STD_HAND_SPEED
             self.diamond.move(WIDTH // 2 if self.number == 2 else -WIDTH // 2)
         if self.number == 1:
-            if self.rect.x >= WIDTH // 4:
+            if self.rect.x >= WIDTH // 2 - 200:
                 self.speed = -STD_HAND_SPEED
             if self.rect.x < -50:
                 self.speed = 0
                 self.rect.x = -50
                 pygame.time.set_timer(self.event, 0)
         else:
-            if self.rect.x <= int(WIDTH * (3 / 4)) - self.image.get_width():
+            if self.rect.x <= WIDTH // 2 - self.image.get_width() + 200:
                 self.speed = STD_HAND_SPEED
             if self.rect.x > WIDTH - 150:
                 self.speed = 0

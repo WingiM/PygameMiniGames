@@ -1,5 +1,5 @@
 # Объявление констант, определяющих работу игр
-SIZE = WIDTH, HEIGHT = 1200, 800
+SIZE = WIDTH, HEIGHT = 1200, 800  # Большое разрешение экрана лучше не ставить
 FPS = 120
 SOUND_DIR = 'Sounds'
 LOAD_DIR = 'data'
