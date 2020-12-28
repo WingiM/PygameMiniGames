@@ -1,5 +1,5 @@
 # Объявление констант, определяющих работу игр
-SIZE = WIDTH, HEIGHT = 800, 800
+SIZE = WIDTH, HEIGHT = 1200, 800
 FPS = 120
 SOUND_DIR = 'Sounds'
 LOAD_DIR = 'data'
@@ -7,12 +7,14 @@ COLORS = {'red': (255, 102, 102),
           'blue': (0, 153, 255),
           'white': (255, 255, 255),
           'green': (102, 204, 0),
-          'orange': (255, 102, 51)}  # Цвета, используемые в играх
+          'orange': (255, 102, 51),
+          'dark green': (0, 102, 0),
+          'black': (12, 12, 12)}  # Цвета, используемые в играх
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
 TTT_WIN_SOUND = 'ttt_win.mp3'
-TTT_CELL_SIZE = 100
+TTT_CELL_SIZE = WIDTH // 10
 
 # Константы для игры в сумо
 SUMO_WIN_SOUND = 'sumo_victory.mp3'
@@ -49,3 +51,5 @@ AH_STICK1_COLOR = COLORS['red']
 AH_STICK2_COLOR = COLORS['blue']
 AH_FIELD_COLOR = COLORS['green']
 AH_PUCK_COLOR = COLORS['orange']
+AH_BORDER_COLOR = COLORS['dark green']
+AH_GOAL_COLOR = COLORS['black']

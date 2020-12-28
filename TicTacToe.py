@@ -82,8 +82,7 @@ class TicTacToeBoard(Board):
         for i in range(3):
             if all(j for j in self.board[i]):
                 c += 1
-        if c == 3:
-            print('1')
+        if c == 3 and not self.won:
             self.set_draw()
 
     def set_draw(self):

@@ -106,18 +106,18 @@ class Hand(pygame.sprite.Sprite):
             self.speed = -STD_HAND_SPEED
             self.diamond.move(WIDTH // 2 if self.number == 2 else -WIDTH // 2)
         if self.number == 1:
-            if self.rect.x >= 200:
+            if self.rect.x >= WIDTH // 4:
                 self.speed = -STD_HAND_SPEED
             if self.rect.x < -50:
                 self.speed = 0
                 self.rect.x = -50
                 pygame.time.set_timer(self.event, 0)
         else:
-            if self.rect.x <= 400:
+            if self.rect.x <= int(WIDTH * (3 / 4)) - self.image.get_width():
                 self.speed = STD_HAND_SPEED
-            if self.rect.x > 650:
+            if self.rect.x > WIDTH - 150:
                 self.speed = 0
-                self.rect.x = 650
+                self.rect.x = WIDTH - 150
                 pygame.time.set_timer(self.event, 0)
 
     def move(self):

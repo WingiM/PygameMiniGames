@@ -27,13 +27,13 @@ class AirHockey:
         # Центральный круг
         pygame.draw.circle(self.screen, 'white', (cn.WIDTH // 2, cn.HEIGHT // 2), 70, 5)
         # Границы поля
-        pygame.draw.rect(self.screen, 'black', (0, 0, cn.WIDTH, cn.HEIGHT), 5)
+        pygame.draw.rect(self.screen, cn.AH_BORDER_COLOR, (0, 0, cn.WIDTH, cn.HEIGHT), 5)
         # "Штрафные" зоны
         pygame.draw.rect(self.screen, 'white', (0, cn.HEIGHT // 2 - 150, 150, 300), 5)
         pygame.draw.rect(self.screen, 'white', (cn.WIDTH - 150, cn.HEIGHT // 2 - 150, 150, 300), 5)
         # Ворота
-        pygame.draw.rect(self.screen, 'black', (0, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
-        pygame.draw.rect(self.screen, 'black', (cn.WIDTH - 5, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        pygame.draw.rect(self.screen, cn.AH_GOAL_COLOR, (0, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        pygame.draw.rect(self.screen, cn.AH_GOAL_COLOR, (cn.WIDTH - 5, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
         # Разделяющая полоса
         pygame.draw.rect(self.screen, 'white', (cn.WIDTH // 2, 0, 3, cn.HEIGHT))
         # Прорисовка клюшек и шайбы
