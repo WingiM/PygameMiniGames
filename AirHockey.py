@@ -24,18 +24,15 @@ class AirHockey:
 
     def render(self):
         self.screen.fill(self.color)
-        # Центральный круг
-        pygame.draw.circle(self.screen, 'white', (cn.WIDTH // 2, cn.HEIGHT // 2), 70, 5)
         # Границы поля
-        pygame.draw.rect(self.screen, cn.AH_BORDER_COLOR, (0, 0, cn.WIDTH, cn.HEIGHT), 5)
-        # "Штрафные" зоны
-        pygame.draw.rect(self.screen, 'white', (0, cn.HEIGHT // 2 - 150, 150, 300), 5)
-        pygame.draw.rect(self.screen, 'white', (cn.WIDTH - 150, cn.HEIGHT // 2 - 150, 150, 300), 5)
+        pygame.draw.rect(self.screen, cn.AH_BORDER_COLOR, (0, 0, cn.WIDTH, cn.HEIGHT), 15)
         # Ворота
-        pygame.draw.rect(self.screen, cn.AH_GOAL_COLOR, (0, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
-        pygame.draw.rect(self.screen, cn.AH_GOAL_COLOR, (cn.WIDTH - 5, cn.AH_GOAL_Y1, 5, cn.AH_GOAL_WIDTH))
+        pygame.draw.line(self.screen, cn.COLORS['red'], (0, cn.AH_GOAL_Y1), (0, cn.AH_GOAL_Y1 + cn.AH_GOAL_WIDTH), 15)
+        pygame.draw.line(self.screen, cn.COLORS['blue'], (cn.WIDTH - 1, cn.AH_GOAL_Y1),
+                         (cn.WIDTH - 1, cn.AH_GOAL_Y1 + cn.AH_GOAL_WIDTH), 15)
         # Разделяющая полоса
-        pygame.draw.rect(self.screen, 'white', (cn.WIDTH // 2, 0, 3, cn.HEIGHT))
+        pygame.draw.line(self.screen, cn.AH_DIVIDING_LINE_COLOR, (cn.WIDTH // 2, 10), (cn.WIDTH // 2, cn.HEIGHT - 10),
+                         5)
         # Прорисовка клюшек и шайбы
         self.s1.draw(self.screen)
         self.s2.draw(self.screen)
@@ -85,9 +82,8 @@ class Stick:  # Клюшки
     def draw(self, screen):
         pos = (int(self.x), int(self.y))
         pygame.draw.circle(screen, self.color, pos, self.radius, 0)
-        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius, 2)
-        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 5, 2)
-        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 10, 2)
+        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius, 5)
+        pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 10, 5)
 
     def reset(self, x, y):
         self.x = x
@@ -184,7 +180,9 @@ class Puck:  # Шайба
         return True
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
+        pos = (int(self.x), int(self.y))
+        pygame.draw.circle(screen, self.color, pos, self.radius)
+        pygame.draw.circle(screen, cn.COLORS['grey'], pos, self.radius - 10)
 
     def get_pos(self):
         return self.x, self.y

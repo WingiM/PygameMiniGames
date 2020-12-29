@@ -9,7 +9,9 @@ COLORS = {'red': (255, 102, 102),
           'green': (102, 204, 0),
           'orange': (255, 102, 51),
           'dark green': (0, 102, 0),
-          'black': (12, 12, 12)}  # Цвета, используемые в играх
+          'black': (12, 12, 12),
+          'grey': (52, 52, 52),
+          'light-red': (255, 0, 0)}  # Цвета, используемые в играх
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
@@ -49,7 +51,8 @@ AH_GOAL_Y1 = HEIGHT // 2 - AH_GOAL_WIDTH // 2
 AH_GOAL_Y2 = HEIGHT // 2 + AH_GOAL_WIDTH // 2
 AH_STICK1_COLOR = COLORS['red']
 AH_STICK2_COLOR = COLORS['blue']
-AH_FIELD_COLOR = COLORS['green']
-AH_PUCK_COLOR = COLORS['orange']
-AH_BORDER_COLOR = COLORS['dark green']
-AH_GOAL_COLOR = COLORS['black']
+AH_FIELD_COLOR = COLORS['white']
+AH_PUCK_COLOR = COLORS['black']
+AH_BORDER_COLOR = COLORS['black']
+AH_GOAL_COLOR = COLORS['orange']
+AH_DIVIDING_LINE_COLOR = COLORS['light-red']
