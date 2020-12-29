@@ -16,8 +16,8 @@ manager = pygame_gui.UIManager(SIZE)
 
 # Настройка игры в крестики нолики
 TicTacToe = TicTacToeBoard(screen)
-TicTacToe.set_view((WIDTH - TicTacToe.width * TTT_CELL_SIZE) // 2, (HEIGHT - TicTacToe.height * TTT_CELL_SIZE) // 2,
-                   TTT_CELL_SIZE)
+TicTacToe.set_view((WIDTH - TicTacToe.width * TTT_CELL_SIZE) // 2,
+                   (HEIGHT - TicTacToe.height * TTT_CELL_SIZE) // 2, TTT_CELL_SIZE)
 
 # Настройка игры в сумо
 SUMO_all_sprites = pygame.sprite.Group()
@@ -112,7 +112,8 @@ def start_game():
                 terminate()
             play_game(game, event)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:  # Перезапуск любой игры осуществляется через пробел
+                # Перезапуск любой игры осуществляется через пробел
+                if event.key == pygame.K_SPACE:
                     game.restart()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:

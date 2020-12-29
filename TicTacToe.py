@@ -44,7 +44,8 @@ class TicTacToeBoard(Board):
         for i in range(self.height):
             x = self.left
             for j in range(self.width):
-                pygame.draw.rect(self.screen, COLORS[self.turn], (x, y, self.cell_size, self.cell_size), self.outline)
+                pygame.draw.rect(self.screen, COLORS[self.turn],
+                                 (x, y, self.cell_size, self.cell_size), self.outline)
                 if x != self.left:
                     pygame.draw.line(self.screen, (0, 0, 0), (x, y), (x, y + self.cell_size),
                                      self.outline)  # Рисует поле
@@ -54,8 +55,8 @@ class TicTacToeBoard(Board):
                     self.screen.blit(self.nought, (x + self.outline // 2, y + self.outline // 2))
                 x += self.cell_size
             if y != self.top:
-                pygame.draw.line(self.screen, (0, 0, 0), (self.left, y), (self.left + self.cell_size * self.width, y),
-                                 self.outline)
+                pygame.draw.line(self.screen, (0, 0, 0), (self.left, y),
+                                 (self.left + self.cell_size * self.width, y), self.outline)
             y += self.cell_size
         if self.won:
             self.set_win()
@@ -66,7 +67,8 @@ class TicTacToeBoard(Board):
         x1, y1 = p1
         x2, y2 = p2
         x3, y3 = p3
-        if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:  # Если равны, то есть победитель
+        # Если равны, то есть победитель
+        if self.board[y1][x1] == self.board[y2][x2] == self.board[y3][x3] != 0:
             self.working = False
             self.won = 'red' if self.board[y1][x1] == 1 else 'blue'
             pygame.mixer.Sound.play(TicTacToeBoard.win_sound)
