@@ -11,8 +11,8 @@ clock = pygame.time.Clock()
 
 
 class AirHockey:
-    goal_sound = load_sound('goal.wav')
-    hit_sound = load_sound('hit.wav')
+    goal_sound = load_sound(cn.AH_GOAL_SOUND)
+    hit_sound = load_sound(cn.AH_HIT_SOUND)
 
     def __init__(self, screen, color, stick1, stick2, puck):
         self.screen = screen

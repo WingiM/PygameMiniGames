@@ -7,6 +7,7 @@ from Sumo import SumoGame, Player, SUMO_field  # Поле для игры в с�
 from StealTheDiamond import StealTheDiamond, Hand, Diamond  # Экран игры в "Украсть бриллиант"
 from AirHockey import Stick, Puck, AirHockey  # Поле для игры в Аэрохоккей
 from load_image import load_image  # Для загрузки изображений (используется и в других частях проекта)
+from load_sound import load_sound
 
 # Начало работы с pygame
 pygame.init()
@@ -93,11 +94,14 @@ def start_screen():
     fon = pygame.transform.scale(load_image('start_screen.png'), (WIDTH, HEIGHT))
     pygame.display.set_caption('Pygame Mini Games')
     screen.blit(fon, (0, 0))
+    if START_MUSIC:
+        pygame.mixer.Sound.play(load_sound('start.mp3'))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.mixer.stop()
                 return
         pygame.display.flip()
         clock.tick(FPS)

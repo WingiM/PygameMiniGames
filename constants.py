@@ -1,7 +1,8 @@
 # Объявление констант, определяющих работу игр
+START_MUSIC = True  # Если не нужна музыка на стартовом экране - False
 SIZE = WIDTH, HEIGHT = 1200, 800  # Большое разрешение экрана лучше не ставить
 FPS = 120
-SOUND_DIR = 'Sounds'
+SOUND_DIR = 'sounds'
 LOAD_DIR = 'data'
 COLORS = {'red': (255, 102, 102),
           'blue': (0, 153, 255),
@@ -56,3 +57,5 @@ AH_PUCK_COLOR = COLORS['black']
 AH_BORDER_COLOR = COLORS['black']
 AH_GOAL_COLOR = COLORS['orange']
 AH_DIVIDING_LINE_COLOR = COLORS['light-red']
+AH_GOAL_SOUND = 'goal.mp3'
+AH_HIT_SOUND = 'hit.mp3'
