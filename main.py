@@ -12,6 +12,7 @@ from load_sound import load_sound
 # Начало работы с pygame
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
+pygame.display.set_icon(load_image('game-controller.png'))
 clock = pygame.time.Clock()
 manager = pygame_gui.UIManager(SIZE, 'style.json')
 
