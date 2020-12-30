@@ -90,7 +90,7 @@ class TicTacToeBoard(Board):
     def set_draw(self):
         self.draw = True
         self.turn = 'white'
-        pygame.display.set_caption('Крестики-нолики (НИЧЬЯ)')
+        self.caption = 'Крестики-нолики (НИЧЬЯ)'
 
     def on_click(self, cell):
         if cell:
@@ -127,11 +127,11 @@ class TicTacToeBoard(Board):
             y1 = (HEIGHT - self.height * self.cell_size) // 2 + y1 * self.cell_size
             y2 = (HEIGHT - self.height * self.cell_size) // 2 + y2 * self.cell_size + self.cell_size
         pygame.draw.line(self.screen, (255, 255, 255), (x1, y1), (x2, y2), self.outline)
-        pygame.display.set_caption(f'Крестики-нолики ({self.won.upper()} ПОБЕДИЛ!)')
+        self.caption = f'Крестики-нолики ({self.won.upper()} ПОБЕДИЛ!)'
 
     def restart(self):
         self.won = None
         self.working = True
         self.board = [[0] * self.width for _ in range(self.height)]
         self.turn = 'red'
-        pygame.display.set_caption('Крестики-нолики')
+        self.caption = 'Крестики-нолики'

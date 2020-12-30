@@ -12,7 +12,7 @@ from load_image import load_image  # Для загрузки изображен�
 pygame.init()
 screen = pygame.display.set_mode(SIZE)
 clock = pygame.time.Clock()
-manager = pygame_gui.UIManager(SIZE)
+manager = pygame_gui.UIManager(SIZE, 'style.json')
 
 # Настройка игры в крестики нолики
 TicTacToe = TicTacToeBoard(screen)
@@ -150,9 +150,9 @@ def start_game():
                 pygame.mixer.Sound.play(AirHockey.hit_sound)
             if AH_puck.check_collision(AH_stick2):  # Отскоки
                 pygame.mixer.Sound.play(AirHockey.hit_sound)
-        manager.update(time_delta)
         pygame.display.set_caption(game.caption)
         screen.fill((0, 0, 0))
+        manager.update(time_delta)
         game.render()
         manager.draw_ui(screen)
         clock.tick(FPS)
