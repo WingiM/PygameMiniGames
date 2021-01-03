@@ -6,6 +6,7 @@ from TicTacToe import TicTacToeBoard  # Поле для игры в крести
 from Sumo import SumoGame, Player, SUMO_field  # Поле для игры в сумо, а также класс игрока
 from StealTheDiamond import StealTheDiamond, Hand, Diamond  # Экран игры в "Украсть бриллиант"
 from AirHockey import Stick, Puck, AirHockey  # Поле для игры в Аэрохоккей
+from SeaBattle import SeaBattleBoard
 from load_image import load_image  # Для загрузки изображений (используется и в других частях проекта)
 from load_sound import load_sound
 
@@ -41,6 +42,11 @@ AH_stick2 = Stick(AH_STICK2_COLOR, AH_STICK2X, AH_STICK2Y)
 AH_puck = Puck(AH_PUCK_COLOR, WIDTH // 2, HEIGHT // 2)
 AH = AirHockey(screen, AH_FIELD_COLOR, AH_stick1, AH_stick2, AH_puck)
 
+# Настройка игры в Морской Бой
+SB = SeaBattleBoard(screen)
+SB.set_view((WIDTH - 8 * SB_CELL_SIZE) // 2,
+            (HEIGHT - 8 * SB_CELL_SIZE) // 2, SB_CELL_SIZE)
+
 # Настройка выпадающего списка
 # Для добавления новой игры необходимо добавить в словарь ее название и класс
 # Также игра должна иметь методы render() и restart()
@@ -50,7 +56,8 @@ AH = AirHockey(screen, AH_FIELD_COLOR, AH_stick1, AH_stick2, AH_puck)
 games_dict = {'Tic Tac Toe (Крестики-нолики)': TicTacToe,
               'Sumo (Сумо)': Sumo,
               'Steal The Diamond (Украсть бриллиант)': STD,
-              'Air Hockey (Аэрохоккей)': AH}
+              'Air Hockey (Аэрохоккей)': AH,
+              'Sea Battle (Морской Бой)': SB}
 game_changer = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
     options_list=list(games_dict.keys()),
     starting_option='Air Hockey (Аэрохоккей)',
@@ -60,7 +67,7 @@ game_changer = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
 
 
 def play_game(game, event):  # Выполняет ивенты некоторых игр
-    if game == TicTacToe:
+    if game == TicTacToe or game == SB:
         if event.type == pygame.MOUSEBUTTONDOWN:
             game.get_click(event.pos)
     elif game == STD:

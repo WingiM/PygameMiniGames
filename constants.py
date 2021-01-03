@@ -59,3 +59,7 @@ AH_GOAL_COLOR = COLORS['orange']
 AH_DIVIDING_LINE_COLOR = COLORS['light-red']
 AH_GOAL_SOUND = 'goal.mp3'
 AH_HIT_SOUND = 'hit.mp3'
+
+# Константы для игры в морской бой
+SB_CELL_SIZE = WIDTH // 15
+SB_CD_LEN = FPS * 2
