@@ -35,15 +35,14 @@ def create_ship_map(arrangement, filename) -> dict:  # Создает "карт�
             x, y = i
             if (x, y + 1) in xs[n]:
                 coords.append((x, y))
-            elif len(coords) > 0:
+            elif (x, y - 1) in coords:
                 coords.append((x, y))
-                break
-        try:
-            if 1 < len(coords):
-                ships[len(coords)].append(coords)
-        except KeyError:
-            print(f'Длина одного или нескольких кораблей превышает 4 клетки в расстановке {filename}')
-            exit(0)
+                try:
+                    ships[len(coords)].append(coords)
+                except KeyError:
+                    print(f'Длина одного или нескольких кораблей превышает 4 клетки в расстановке {filename}')
+                    exit(0)
+                coords = []
 
     # Происходит поиск кораблей по оси Y
     for n in ys:
@@ -52,15 +51,14 @@ def create_ship_map(arrangement, filename) -> dict:  # Создает "карт�
             x, y = i
             if (x + 1, y) in ys[n]:
                 coords.append((x, y))
-            elif len(coords) > 0:
+            elif (x - 1, y) in coords:
                 coords.append((x, y))
-                break
-        try:
-            if 1 < len(coords):
-                ships[len(coords)].append(coords)
-        except KeyError:
-            print(f'Длина одного или нескольких кораблей превышает 4 клетки в расстановке {filename}')
-            exit(0)
+                try:
+                    ships[len(coords)].append(coords)
+                except KeyError:
+                    print(f'Длина одного или нескольких кораблей превышает 4 клетки в расстановке {filename}')
+                    exit(0)
+                coords = []
 
     return ships
 
@@ -96,6 +94,7 @@ def get_round_ships_count(arrangement, x, y) -> int:  # Возвращает к�
 
 def check_arrangement(arrangement, ship_map) -> bool:  # Проверяет правильность расстановки
     if max(map(len, arrangement)) > 10 or len(arrangement) != 10:  # Не превышает ли поле установленные размеры
+        print('1')
         return False
 
     for i in range(len(arrangement)):  # Нет ли неправильных кораблей (косых или образующих угол)
@@ -105,6 +104,7 @@ def check_arrangement(arrangement, ship_map) -> bool:  # Проверяет пр
 
     # Правильно ли задано количество кораблей (4 одиночных, 3 двойных и т.д.)
     if list(map(len, ship_map.values())) != [4, 3, 2, 1]:
+        print(list(map(len, ship_map.values())))
         return False
 
     return True
