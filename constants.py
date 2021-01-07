@@ -23,9 +23,11 @@ TTT_CELL_SIZE = WIDTH // 10
 
 # Константы для игры в сумо
 SUMO_WIN_SOUND = 'sumo_victory.mp3'
-SUMO_PLAYER1 = (300, 190)
-SUMO_PLAYER2 = (300, 410)
-SUMO_MOVES = (0, 30)  # Перемещение игроков по оси x и y соответственно
+SUMO_FIELD_COORDS = (WIDTH // 2 - 250, HEIGHT // 2 - 250)
+SUMO_PLAYER_SCALE = (200, 200)
+SUMO_PLAYER1 = (WIDTH // 2 - SUMO_PLAYER_SCALE[0] // 2, HEIGHT // 2 - SUMO_PLAYER_SCALE[1] // 3 - SUMO_PLAYER_SCALE[1])
+SUMO_PLAYER2 = (WIDTH // 2 - SUMO_PLAYER_SCALE[0] // 2, HEIGHT // 2 + SUMO_PLAYER_SCALE[1] // 3)
+SUMO_MOVES = (0, 50)  # Перемещение игроков по оси x и y соответственно
 
 # Константы для игры в "Украсть бриллиант"
 STD_TIME_RANGE = (2000, 4000)  # Время указываетсяв миллисекундах

@@ -4,7 +4,7 @@
 import pygame
 from load_image import load_image
 from load_sound import load_sound
-from constants import SUMO_WIN_SOUND, SUMO_MOVES
+from constants import SUMO_WIN_SOUND, SUMO_MOVES, SUMO_FIELD_COORDS, SUMO_PLAYER_SCALE
 
 pygame.init()
 size = width, height = 800, 800
@@ -13,7 +13,7 @@ FIELD_IMAGE = pygame.transform.scale(load_image('sumo_field.png'), (500, 500))
 SUMO_field = pygame.sprite.Sprite()
 SUMO_field.image = FIELD_IMAGE
 SUMO_field.rect = SUMO_field.image.get_rect()
-SUMO_field.rect.x, SUMO_field.rect.y = 150, 150
+SUMO_field.rect.x, SUMO_field.rect.y = SUMO_FIELD_COORDS
 
 
 class SumoGame:
@@ -58,7 +58,7 @@ class SumoGame:
 
 
 class Player(pygame.sprite.Sprite):
-    image = pygame.transform.scale(load_image('sumo.png'), (200, 200))
+    image = pygame.transform.scale(load_image('sumo.png'), SUMO_PLAYER_SCALE)
 
     def __init__(self, *group, pos, transform=None):
         super(Player, self).__init__(*group)

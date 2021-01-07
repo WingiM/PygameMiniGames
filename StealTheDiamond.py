@@ -18,6 +18,7 @@ screen = pygame.display.set_mode(size)
 class StealTheDiamond:
     bell = load_sound('bell.mp3')
     rewind = load_sound('restart.mp3')
+    bg = pygame.transform.scale(load_image('STD_back.png'), (WIDTH, HEIGHT))
 
     def __init__(self, screen, sprites, p1, p2, diamond):
         self.screen = screen
@@ -36,7 +37,8 @@ class StealTheDiamond:
         if self.active:
             self.screen.fill((0, 4, 71))
         else:
-            self.screen.fill((153, 102, 51))
+            self.screen.fill((204, 204, 0))
+        self.screen.blit(StealTheDiamond.bg, (0, 0))
         self.sprites.draw(self.screen)
 
     def update(self):
