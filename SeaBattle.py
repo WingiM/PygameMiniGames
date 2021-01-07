@@ -209,7 +209,7 @@ class SeaBattleBoard(Board):
                     self.shoot_rounds(ship)
         self.check_win()
 
-    def check_win(self):
+    def check_win(self):  # Проверяет победу одного из игроков
         if not any(self.map[ship_size] for ship_size in self.map):
             self.won = True
             pygame.mixer.Sound.play(load_sound(WIN_SOUND))
