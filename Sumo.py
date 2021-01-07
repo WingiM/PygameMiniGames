@@ -62,7 +62,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, *group, pos, transform=None):
         super(Player, self).__init__(*group)
-        if not transform:
+        if transform:
             self.image = pygame.transform.rotate(Player.image, 180)
         else:
             self.image = Player.image

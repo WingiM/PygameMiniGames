@@ -17,25 +17,6 @@ pygame.display.set_icon(load_image('game-controller.png'))
 clock = pygame.time.Clock()
 manager = pygame_gui.UIManager(SIZE, 'style.json')
 
-# Настройка игры в крестики нолики
-TicTacToe = TicTacToeBoard(screen)
-TicTacToe.set_view((WIDTH - TicTacToe.width * TTT_CELL_SIZE) // 2,
-                   (HEIGHT - TicTacToe.height * TTT_CELL_SIZE) // 2, TTT_CELL_SIZE)
-
-# Настройка игры в сумо
-SUMO_all_sprites = pygame.sprite.Group()
-SUMO_all_sprites.add(SUMO_field)
-SUMO_player1 = Player(SUMO_all_sprites, pos=SUMO_PLAYER1)
-SUMO_player2 = Player(SUMO_all_sprites, pos=SUMO_PLAYER2, transform=180)
-Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
-
-# Настройка игры в "Украсть бриллиант"
-STD_all_sprites = pygame.sprite.Group()
-STD_diamond = Diamond(STD_all_sprites)
-STD_hand1 = Hand(STD_all_sprites, number=1, diamond=STD_diamond)
-STD_hand2 = Hand(STD_all_sprites, number=2, diamond=STD_diamond)
-STD = StealTheDiamond(screen, STD_all_sprites, STD_hand1, STD_hand2, STD_diamond)
-
 # Настройка игры в Аэро Хоккей
 AH_stick1 = Stick(AH_STICK1_COLOR, AH_STICK1X, AH_STICK1Y)
 AH_stick2 = Stick(AH_STICK2_COLOR, AH_STICK2X, AH_STICK2Y)
@@ -47,17 +28,37 @@ SB = SeaBattleBoard(screen)
 SB.set_view((WIDTH - 8 * SB_CELL_SIZE) // 2,
             (HEIGHT - 8 * SB_CELL_SIZE) // 2, SB_CELL_SIZE)
 
+# Настройка игры в крестики нолики
+TicTacToe = TicTacToeBoard(screen)
+TicTacToe.set_view((WIDTH - TicTacToe.width * TTT_CELL_SIZE) // 2,
+                   (HEIGHT - TicTacToe.height * TTT_CELL_SIZE) // 2, TTT_CELL_SIZE)
+
+# Настройка игры в сумо
+SUMO_all_sprites = pygame.sprite.Group()
+SUMO_all_sprites.add(SUMO_field)
+SUMO_player1 = Player(SUMO_all_sprites, pos=SUMO_PLAYER1, transform=180)
+SUMO_player2 = Player(SUMO_all_sprites, pos=SUMO_PLAYER2)
+Sumo = SumoGame(screen, SUMO_player1, SUMO_player2, SUMO_all_sprites)
+
+# Настройка игры в "Украсть бриллиант"
+STD_all_sprites = pygame.sprite.Group()
+STD_diamond = Diamond(STD_all_sprites)
+STD_hand1 = Hand(STD_all_sprites, number=1, diamond=STD_diamond)
+STD_hand2 = Hand(STD_all_sprites, number=2, diamond=STD_diamond)
+STD = StealTheDiamond(screen, STD_all_sprites, STD_hand1, STD_hand2, STD_diamond)
+
+
 # Настройка выпадающего списка
 # Для добавления новой игры необходимо добавить в словарь ее название и класс
 # Также игра должна иметь методы render() и restart()
 # Обработку действий в игре можно написать в ф-ии play_game(), если игра статичная
 # Если игра требует частых обновлений и проверок, то лучше написать в основной игровой цикл
 # Например, как игра в Аэрохоккей
-games_dict = {'Tic Tac Toe (Крестики-нолики)': TicTacToe,
+games_dict = {'Air Hockey (Аэрохоккей)': AH,
+              'Sea Battle (Морской Бой)': SB,
+              'Tic Tac Toe (Крестики-нолики)': TicTacToe,
               'Sumo (Сумо)': Sumo,
-              'Steal The Diamond (Украсть бриллиант)': STD,
-              'Air Hockey (Аэрохоккей)': AH,
-              'Sea Battle (Морской Бой)': SB}
+              'Steal The Diamond (Украсть бриллиант)': STD}
 game_changer = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
     options_list=list(games_dict.keys()),
     starting_option='Air Hockey (Аэрохоккей)',

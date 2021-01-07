@@ -12,11 +12,13 @@ COLORS = {'red': (255, 102, 102),
           'dark green': (0, 102, 0),
           'black': (12, 12, 12),
           'grey': (52, 52, 52),
-          'light-red': (255, 0, 0)}  # Цвета, используемые в играх
+          'light-red': (255, 0, 0),
+          'dark-blue': (0, 0, 255)}  # Цвета, используемые в играх
+
+WIN_SOUND = 'win.mp3'
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
-TTT_WIN_SOUND = 'ttt_win.mp3'
 TTT_CELL_SIZE = WIDTH // 10
 
 # Константы для игры в сумо
@@ -26,7 +28,7 @@ SUMO_PLAYER2 = (300, 410)
 SUMO_MOVES = (0, 30)  # Перемещение игроков по оси x и y соответственно
 
 # Константы для игры в "Украсть бриллиант"
-STD_TIME_RANGE = (2000, 4000)  # От 2х до 6и секунд
+STD_TIME_RANGE = (2000, 4000)  # Время указываетсяв миллисекундах
 STD_DELAY = 100
 STD_EVENT_TYPE = 32775
 STD_HAND1_EVENT = 32776
@@ -61,5 +63,10 @@ AH_GOAL_SOUND = 'goal.mp3'
 AH_HIT_SOUND = 'hit.mp3'
 
 # Константы для игры в морской бой
-SB_CELL_SIZE = WIDTH // 15
-SB_CD_LEN = FPS * 2
+SB_CELL_SIZE = WIDTH // 20
+SB_CD_LENGTH = FPS * 2  # Время "перезарядки" после хода одного из игроков
+SB_FONT_COLOR = COLORS['dark-blue']
+SB_PLAYER1_FILENAME = 'SB_player1.txt'
+SB_PLAYER2_FILENAME = 'SB_player2.txt'
+SB_EXPLOSION_SOUND = 'SB_explosion.mp3'
+SB_MISS_SOUND = 'SB_miss.mp3'
