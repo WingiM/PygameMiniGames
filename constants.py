@@ -16,10 +16,13 @@ COLORS = {'red': (255, 102, 102),
           'dark-blue': (0, 0, 255)}  # Цвета, используемые в играх
 
 WIN_SOUND = 'win.mp3'
+ICON_IMAGE = 'game-controller.png'
 
 # Константы для игры в крестики-нолики
 TTT_CLICK_SOUND = 'click.mp3'
 TTT_CELL_SIZE = WIDTH // 10
+TTT_CROSS_IMAGE = 'cross.png'
+TTT_NOUGHT_IMAGE = 'nought.png'
 
 # Константы для игры в сумо
 SUMO_WIN_SOUND = 'sumo_victory.mp3'
@@ -28,6 +31,8 @@ SUMO_PLAYER_SCALE = (200, 200)
 SUMO_PLAYER1 = (WIDTH // 2 - SUMO_PLAYER_SCALE[0] // 2, HEIGHT // 2 - SUMO_PLAYER_SCALE[1] // 3 - SUMO_PLAYER_SCALE[1])
 SUMO_PLAYER2 = (WIDTH // 2 - SUMO_PLAYER_SCALE[0] // 2, HEIGHT // 2 + SUMO_PLAYER_SCALE[1] // 3)
 SUMO_MOVES = (0, 50)  # Перемещение игроков по оси x и y соответственно
+SUMO_FIELD_IMAGE = 'sumo_field.png'
+SUMO_PLAYER_IMAGE = 'sumo.png'
 
 # Константы для игры в "Украсть бриллиант"
 STD_TIME_RANGE = (2000, 4000)  # Время указываетсяв миллисекундах
@@ -37,6 +42,12 @@ STD_HAND1_EVENT = 32776
 STD_HAND2_EVENT = 32777
 STD_HAND_DELAY = 50
 STD_HAND_SPEED = 200  # Желательно не ставить высокие значения
+STD_RESTART_SOUND = 'restart.mp3'
+STD_BELL_SOUND = 'bell.mp3'
+STD_SNATCH_SOUND = 'snatch.mp3'
+STD_BACKGROUND_IMAGE = 'STD_back.png'
+STD_DIAMOND_IMAGE = 'diamond.png'
+STD_HAND_IMAGE = 'hand.png'
 
 # Константы для игры в Аэро хоккей
 AH_STICK_RADIUS = 40
@@ -72,3 +83,4 @@ SB_PLAYER1_FILENAME = 'SB_player1.txt'
 SB_PLAYER2_FILENAME = 'SB_player2.txt'
 SB_EXPLOSION_SOUND = 'SB_explosion.mp3'
 SB_MISS_SOUND = 'SB_miss.mp3'
+SB_BACKGROUND_IMAGE = 'SB_back.png'

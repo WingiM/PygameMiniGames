@@ -7,7 +7,8 @@ import random
 from load_image import load_image
 from load_sound import load_sound
 from constants import STD_TIME_RANGE, STD_DELAY, STD_EVENT_TYPE, \
-    STD_HAND1_EVENT, STD_HAND2_EVENT, STD_HAND_SPEED, WIDTH, HEIGHT
+    STD_HAND1_EVENT, STD_HAND2_EVENT, STD_HAND_SPEED, WIDTH, HEIGHT, STD_SNATCH_SOUND, STD_HAND_IMAGE, \
+    STD_DIAMOND_IMAGE, STD_BACKGROUND_IMAGE, STD_RESTART_SOUND, STD_BELL_SOUND
 
 FPS = 60
 pygame.init()
@@ -16,9 +17,9 @@ screen = pygame.display.set_mode(size)
 
 
 class StealTheDiamond:
-    bell = load_sound('bell.mp3')
-    rewind = load_sound('restart.mp3')
-    bg = pygame.transform.scale(load_image('STD_back.png'), (WIDTH, HEIGHT))
+    bell = load_sound(STD_BELL_SOUND)
+    rewind = load_sound(STD_RESTART_SOUND)
+    bg = pygame.transform.scale(load_image(STD_BACKGROUND_IMAGE), (WIDTH, HEIGHT))
 
     def __init__(self, screen, sprites, p1, p2, diamond):
         self.screen = screen
@@ -60,7 +61,7 @@ class StealTheDiamond:
 
 
 class Diamond(pygame.sprite.Sprite):
-    image = pygame.transform.scale(load_image('diamond.png'), (200, 200))
+    image = pygame.transform.scale(load_image(STD_DIAMOND_IMAGE), (200, 200))
 
     def __init__(self, *group):
         super().__init__(*group)
@@ -81,8 +82,8 @@ class Diamond(pygame.sprite.Sprite):
 
 
 class Hand(pygame.sprite.Sprite):
-    image = pygame.transform.scale(load_image('hand.png'), (200, 150))
-    snatch = load_sound('snatch.mp3')
+    image = pygame.transform.scale(load_image(STD_HAND_IMAGE), (200, 150))
+    snatch = load_sound(STD_SNATCH_SOUND)
 
     def __init__(self, *group, number=0, diamond=None):
         super().__init__(*group)

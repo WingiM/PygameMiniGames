@@ -2,7 +2,7 @@ import pygame
 from itertools import product
 from Board import Board
 from constants import WIDTH, HEIGHT, SB_CELL_SIZE, SB_CD_LENGTH, SB_FONT_COLOR, SB_PLAYER1_FILENAME, \
-    SB_PLAYER2_FILENAME, SB_EXPLOSION_SOUND, SB_MISS_SOUND, WIN_SOUND, COLORS
+    SB_PLAYER2_FILENAME, SB_EXPLOSION_SOUND, SB_MISS_SOUND, WIN_SOUND, COLORS, SB_BACKGROUND_IMAGE
 from load_image import load_image
 from load_sound import load_sound
 
@@ -94,7 +94,6 @@ def get_round_ships_count(arrangement, x, y) -> int:  # Возвращает к�
 
 def check_arrangement(arrangement, ship_map) -> bool:  # Проверяет правильность расстановки
     if max(map(len, arrangement)) > 10 or len(arrangement) != 10:  # Не превышает ли поле установленные размеры
-        print('1')
         return False
 
     for i in range(len(arrangement)):  # Нет ли неправильных кораблей (косых или образующих угол)
@@ -135,7 +134,7 @@ def load_arrangement(filename) -> tuple:  # Загружает расстано�
 class SeaBattleBoard(Board):
     explosion_sound = load_sound(SB_EXPLOSION_SOUND)
     miss_sound = load_sound(SB_MISS_SOUND)
-    background = pygame.transform.scale(load_image('SB_back.png'), (WIDTH, HEIGHT))
+    background = pygame.transform.scale(load_image(SB_BACKGROUND_IMAGE), (WIDTH, HEIGHT))
 
     def __init__(self, screen):
         super().__init__(10, 10, screen)

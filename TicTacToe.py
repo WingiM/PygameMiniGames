@@ -2,15 +2,15 @@ import pygame
 from Board import Board
 from load_image import load_image
 from load_sound import load_sound
-from constants import WIN_SOUND, TTT_CLICK_SOUND, COLORS, WIDTH, HEIGHT
+from constants import WIN_SOUND, TTT_CLICK_SOUND, COLORS, WIDTH, HEIGHT, TTT_NOUGHT_IMAGE, TTT_CROSS_IMAGE
 
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
 
 
 class TicTacToeBoard(Board):
-    cross = load_image('cross.png')
-    nought = load_image('nought.png')
+    cross = load_image(TTT_CROSS_IMAGE)
+    nought = load_image(TTT_NOUGHT_IMAGE)
     press_sound = load_sound(TTT_CLICK_SOUND)
     win_sound = load_sound(WIN_SOUND)
 
