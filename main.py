@@ -2,12 +2,12 @@ import sys
 import pygame
 import pygame_gui
 from constants import *  # Переносит все константы, использующиеся в проекте
-from TicTacToe import TicTacToeBoard  # Поле для игры в крестики-нолики
-from Sumo import SumoGame, Player, SUMO_field  # Поле для игры в сумо, а также класс игрока
-from StealTheDiamond import StealTheDiamond, Hand, Diamond  # Экран игры в "Украсть бриллиант"
-from AirHockey import Stick, Puck, AirHockey  # Поле для игры в Аэрохоккей
+from TicTacToe import TicTacToeBoard
+from Sumo import SumoGame, Player, SUMO_field
+from StealTheDiamond import StealTheDiamond, Hand, Diamond
+from AirHockey import Stick, Puck, AirHockey
 from SeaBattle import SeaBattleBoard
-from load_image import load_image  # Для загрузки изображений (используется и в других частях проекта)
+from load_image import load_image
 from load_sound import load_sound
 
 # Начало работы с pygame
@@ -67,7 +67,8 @@ game_changer = pygame_gui.elements.ui_drop_down_menu.UIDropDownMenu(
 )
 
 
-def play_game(game, event):  # Выполняет ивенты некоторых игр
+def play_game(game, event):
+    """Обрабатка ивентов некоторых игр"""
     if game == TicTacToe or game == SB:
         if event.type == pygame.MOUSEBUTTONDOWN:
             game.get_click(event.pos)
@@ -95,11 +96,13 @@ def play_game(game, event):  # Выполняет ивенты некоторы�
 
 
 def terminate():
+    """Завершение всех процессов и выход из программы"""
     pygame.quit()
     sys.exit()
 
 
 def start_screen():
+    """Запуск стартового экрана (заставки)"""
     fon = pygame.transform.scale(load_image('start_screen.png'), (WIDTH, HEIGHT))
     pygame.display.set_caption('Pygame Mini Games')
     screen.blit(fon, (0, 0))
@@ -117,6 +120,7 @@ def start_screen():
 
 
 def start_game():
+    """Запуск игры"""
     game = AH
     while True:
         time_delta = clock.get_time() / 1000

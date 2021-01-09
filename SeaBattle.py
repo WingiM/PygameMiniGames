@@ -11,7 +11,8 @@ size = width, height = WIDTH, HEIGHT
 screen = pygame.display.set_mode(size)
 
 
-def create_ship_map(arrangement, filename) -> dict:  # Создает "карту" расстановки кораблей
+def create_ship_map(arrangement, filename) -> dict:
+    """Создание 'карты' расстановки кораблей"""
     ships = {1: [], 2: [], 3: [], 4: []}
 
     # Для каждого значения координат X и Y создается массив координат, где расположены корабли
@@ -63,7 +64,8 @@ def create_ship_map(arrangement, filename) -> dict:  # Создает "карт�
     return ships
 
 
-def check_equal_coordinates(arrangement) -> bool:  # Проверяет, нет ли "косых" кораблей
+def check_equal_coordinates(arrangement) -> bool:
+    """Проверка существования 'косых' кораблей"""
     a, all_x = list(map(lambda w: w[0], arrangement)), True
     b, all_y = list(map(lambda w: w[1], arrangement)), True
     for i in a:
@@ -75,11 +77,13 @@ def check_equal_coordinates(arrangement) -> bool:  # Проверяет, нет 
     return any([all_x, all_y])
 
 
-def correct(x, y):  # Проверяет корректность введеных координат (существует ли такая клетка)
+def correct(x, y):
+    """Проверка корректности введеных координат"""
     return True if 0 <= x <= 9 and 0 <= y <= 9 else False
 
 
-def get_round_ships_count(arrangement, x, y) -> int:  # Возвращает количество клеток с кораблями вокруг данной
+def get_round_ships_count(arrangement, x, y) -> int:
+    """Количество клеток с кораблями вокруг данной"""
     boards = [(x, y)]
     rounds = list(
         filter(lambda w: correct(*w) and not (w[0] == x and w[1] == y), product([x, x + 1, x - 1], [y, y + 1, y - 1])))
@@ -92,7 +96,8 @@ def get_round_ships_count(arrangement, x, y) -> int:  # Возвращает к�
         return 4
 
 
-def check_arrangement(arrangement, ship_map) -> bool:  # Проверяет правильность расстановки
+def check_arrangement(arrangement, ship_map) -> bool:
+    """Проверка правильности расстановки"""
     if max(map(len, arrangement)) > 10 or len(arrangement) != 10:  # Не превышает ли поле установленные размеры
         return False
 
@@ -109,7 +114,8 @@ def check_arrangement(arrangement, ship_map) -> bool:  # Проверяет пр
     return True
 
 
-def load_arrangement(filename) -> tuple:  # Загружает расстановку
+def load_arrangement(filename) -> tuple:
+    """Загрузка расстановки"""
     is_empty = False
     try:
         with open(filename, 'r') as arrangement:
@@ -132,6 +138,8 @@ def load_arrangement(filename) -> tuple:  # Загружает расстано�
 
 
 class SeaBattleBoard(Board):
+    """Поле для игры в Морской Бой"""
+
     explosion_sound = load_sound(SB_EXPLOSION_SOUND)
     miss_sound = load_sound(SB_MISS_SOUND)
     background = pygame.transform.scale(load_image(SB_BACKGROUND_IMAGE), (WIDTH, HEIGHT))
@@ -151,6 +159,7 @@ class SeaBattleBoard(Board):
             self.caption = 'Морской Бой (у одного из игроков пустое поле)'
 
     def render(self):
+        """Прорисовка поля для игры"""
         if self.cooldown:
             self.cooldown -= 1
             if not self.cooldown:
@@ -188,6 +197,7 @@ class SeaBattleBoard(Board):
             y += self.cell_size
 
     def on_click(self, cell):
+        """Совершает действие по нажатию кнопки мыши пользователем"""
         if cell and not self.cooldown and not self.won:
             x, y = cell
             # Если игрок промахивается, то ход передается следующему после "перезарядки"
@@ -200,7 +210,8 @@ class SeaBattleBoard(Board):
                 self.board[y][x] = '+'
                 self.check_kills()
 
-    def check_kills(self):  # Проверяет, нет ли уничтоженных кораблей
+    def check_kills(self):
+        """Проверка существования уничтоженных кораблей на поле"""
         for ship_size in self.map:
             for ship in self.map[ship_size]:
                 if all(self.cell_is_destroyed(x, y) for x, y in ship):
@@ -208,7 +219,8 @@ class SeaBattleBoard(Board):
                     self.shoot_rounds(ship)
         self.check_win()
 
-    def check_win(self):  # Проверяет победу одного из игроков
+    def check_win(self):
+        """Проверка победы одного из игроков"""
         if not any(self.map[ship_size] for ship_size in self.map):
             self.won = True
             pygame.mixer.Sound.play(load_sound(WIN_SOUND))
@@ -217,7 +229,8 @@ class SeaBattleBoard(Board):
             else:
                 self.caption = 'Морской бой (ПОБЕДИЛ ИГРОК 1)'
 
-    def shoot_rounds(self, ship):  # Закрашивает клетки возле уничтоженного корабля (вызывается из check_kills())
+    def shoot_rounds(self, ship):
+        """Закрашивание клеток вокруг уничтоженного корабля (вызывается из check_kills())"""
         for i in ship:
             x, y = i
             rounds = list(
@@ -228,10 +241,12 @@ class SeaBattleBoard(Board):
                 if self.board[y1][x1] == '.':
                     self.board[y1][x1] = '@'
 
-    def cell_is_destroyed(self, x, y):  # Есть ли в этой клетке поврежденная часть корабля
+    def cell_is_destroyed(self, x, y):
+        """Проверка данной клетки на наличие поврежденной части корабля"""
         return self.board[y][x] == '+'
 
     def restart(self):
+        """Перезапуск игры"""
         self.caption = 'Морской бой'
         self.p1, self.p1_ship_map, self.p1_is_empty = load_arrangement(SB_PLAYER1_FILENAME)
         self.p2, self.p2_ship_map, self.p2_is_empty = load_arrangement(SB_PLAYER2_FILENAME)

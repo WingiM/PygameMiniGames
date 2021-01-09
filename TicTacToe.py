@@ -9,6 +9,7 @@ screen = pygame.display.set_mode(size)
 
 
 class TicTacToeBoard(Board):
+    """Класс для игры в Крестики-нолики"""
     cross = load_image(TTT_CROSS_IMAGE)
     nought = load_image(TTT_NOUGHT_IMAGE)
     press_sound = load_sound(TTT_CLICK_SOUND)
@@ -29,6 +30,7 @@ class TicTacToeBoard(Board):
         self.won_cells = ()
 
     def set_view(self, left, top, cell_size):
+        """Устанавливает отступы слева и сверху, размер клетки поля, толщину границ клеток"""
         self.left = left
         self.top = top
         self.cell_size = cell_size
@@ -39,6 +41,7 @@ class TicTacToeBoard(Board):
                                              (self.cell_size - self.outline, self.cell_size - self.outline))
 
     def render(self):
+        """Прорисовка поля"""
         self.screen.fill(COLORS[self.turn])
         y = self.top
         for i in range(self.height):
@@ -64,6 +67,7 @@ class TicTacToeBoard(Board):
             self.set_draw()
 
     def check_three(self, p1, p2, p3):
+        """Проверка трех клеток, расположенных подряд (вызывается из check_win())"""
         x1, y1 = p1
         x2, y2 = p2
         x3, y3 = p3
@@ -74,7 +78,8 @@ class TicTacToeBoard(Board):
             pygame.mixer.Sound.play(TicTacToeBoard.win_sound)
             self.won_cells = (p1, p3)
 
-    def check_win(self):  # Проверка победителя или ничьи (все возможные комбинации)
+    def check_win(self):
+        """Проверка победителя или ничьи (все возможные комбинации)"""
         c = 0
         for i in range(3):
             self.check_three((i, 0), (i, 1), (i, 2))
@@ -84,15 +89,17 @@ class TicTacToeBoard(Board):
         for i in range(3):
             if all(j for j in self.board[i]):
                 c += 1
-        if c == 3 and not self.won:
+        if c == 3 and not self.won:  # Ничья
             self.set_draw()
 
     def set_draw(self):
+        """Установка ничьи"""
         self.draw = True
         self.turn = 'white'
         self.caption = 'Крестики-нолики (НИЧЬЯ)'
 
     def on_click(self, cell):
+        """Совершает действие по нажатию кнопки мыши пользователем"""
         if cell:
             x, y = cell
             if not self.board[y][x]:
@@ -103,7 +110,8 @@ class TicTacToeBoard(Board):
                 if self.working:
                     self.turn = 'blue' if self.turn == 'red' else 'red'
 
-    def set_win(self):  # Рисует линии победителей
+    def set_win(self):
+        """Прорисовка линий элементов, образующих ряд из трех"""
         x1, y1 = self.won_cells[0]
         x2, y2 = self.won_cells[1]
         if x1 == x2 and y1 != y2:
@@ -130,6 +138,7 @@ class TicTacToeBoard(Board):
         self.caption = f'Крестики-нолики ({self.won.upper()} ПОБЕДИЛ!)'
 
     def restart(self):
+        """Перезапуск игры"""
         self.won = None
         self.working = True
         self.board = [[0] * self.width for _ in range(self.height)]

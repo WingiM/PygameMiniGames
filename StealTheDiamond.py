@@ -17,8 +17,9 @@ screen = pygame.display.set_mode(size)
 
 
 class StealTheDiamond:
-    bell = load_sound(STD_BELL_SOUND)
-    rewind = load_sound(STD_RESTART_SOUND)
+    """Класс игры в 'Украсть бриллиант'"""
+    bell_sound = load_sound(STD_BELL_SOUND)
+    rewind_sound = load_sound(STD_RESTART_SOUND)
     bg = pygame.transform.scale(load_image(STD_BACKGROUND_IMAGE), (WIDTH, HEIGHT))
 
     def __init__(self, screen, sprites, p1, p2, diamond):
@@ -35,6 +36,7 @@ class StealTheDiamond:
         pygame.time.set_timer(STD_EVENT_TYPE, self.delay)
 
     def render(self):
+        """Прорисовка игрового поля и всех спрайтов игры"""
         if self.active:
             self.screen.fill((0, 4, 71))
         else:
@@ -43,15 +45,17 @@ class StealTheDiamond:
         self.sprites.draw(self.screen)
 
     def update(self):
+        """Обновление таймера игры"""
         if self.time > 0:
             self.time -= self.delay
         else:
-            pygame.mixer.Sound.play(StealTheDiamond.bell)
+            pygame.mixer.Sound.play(StealTheDiamond.bell_sound)
             self.active = True
             pygame.time.set_timer(STD_EVENT_TYPE, 0)
 
     def restart(self):
-        pygame.mixer.Sound.play(StealTheDiamond.rewind)
+        """Перезапуск игры"""
+        pygame.mixer.Sound.play(StealTheDiamond.rewind_sound)
         self.active = False
         self.time = random.randint(*self.time_range)
         pygame.time.set_timer(STD_EVENT_TYPE, self.delay)
@@ -61,6 +65,7 @@ class StealTheDiamond:
 
 
 class Diamond(pygame.sprite.Sprite):
+    """Класс для спрайта бриллианта"""
     image = pygame.transform.scale(load_image(STD_DIAMOND_IMAGE), (200, 200))
 
     def __init__(self, *group):
@@ -73,15 +78,18 @@ class Diamond(pygame.sprite.Sprite):
         self.grabbed = False
 
     def move(self, speed):
+        """Перемещение бриллианта, если его украли"""
         self.rect = self.rect.move(speed, 0)
         self.grabbed = True
 
-    def set_start_pos(self):  # Восстановление позиции бриллианта
+    def set_start_pos(self):
+        """Восстановление позиции бриллианта"""
         self.rect.x = WIDTH // 2 - self.image.get_width() // 2
         self.rect.y = HEIGHT // 2 - self.image.get_width() // 2
 
 
 class Hand(pygame.sprite.Sprite):
+    """Класс для спрайта руки"""
     image = pygame.transform.scale(load_image(STD_HAND_IMAGE), (200, 150))
     snatch = load_sound(STD_SNATCH_SOUND)
 
@@ -100,11 +108,13 @@ class Hand(pygame.sprite.Sprite):
         self.can_move = False
 
     def pressed(self):
+        """Реакция на нажатие клавиши руки"""
         if not self.speed:
             self.speed = STD_HAND_SPEED if self.number == 1 else -STD_HAND_SPEED
             pygame.time.set_timer(self.event, self.delay)
 
-    def check_collision(self):  # Проверяет столкновения с алмазом
+    def check_collision(self):
+        """Проверяет столкновения с алмазом"""
         if pygame.sprite.collide_mask(self, self.diamond) and not self.diamond.grabbed and self.can_move:
             pygame.mixer.Sound.play(Hand.snatch)
             self.speed = -STD_HAND_SPEED
@@ -125,5 +135,6 @@ class Hand(pygame.sprite.Sprite):
                 pygame.time.set_timer(self.event, 0)
 
     def move(self):
+        """Перемещение руки по игровому полю"""
         self.rect = self.rect.move(self.speed, 0)
         self.check_collision()

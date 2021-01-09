@@ -2,6 +2,7 @@ import pygame
 
 
 class Board:
+    """Класс, использующийся для игр на клетчатом поле"""
     def __init__(self, width, height, screen):
         self.width = width
         self.height = height
@@ -12,14 +13,17 @@ class Board:
         self.screen = screen
 
     def correct(self, x, y):
+        """Проверка корректности данных коордиант"""
         return True if 0 <= x <= self.width - 1 and 0 <= y <= self.height - 1 else False
 
     def set_view(self, left, top, cell_size):
+        """Устанавливает отступы слева и сверху, а также размер клетки поля"""
         self.left = left
         self.top = top
         self.cell_size = cell_size
 
     def render(self):
+        """Прорисовка поля"""
         y = self.top
         for i in range(self.height):
             x = self.left
@@ -31,6 +35,7 @@ class Board:
             y += self.cell_size
 
     def get_cell(self, mouse_pos):
+        """Возвращает координаты клетки поля, которой соответствуют координаты мыши mouse_pos"""
         x, y = mouse_pos
         board_size_x = self.left + self.cell_size * self.width
         board_size_y = self.top + self.cell_size * self.height
@@ -40,8 +45,10 @@ class Board:
                 board_size_y - y) // self.cell_size
 
     def on_click(self, cell):
+        """Метод для выполнения каких-то действий для данной клетки"""
         pass
 
     def get_click(self, mouse_pos):
+        """Метод-посредник для обработки нажатия пользователя и последующего дейсвтия"""
         cell = self.get_cell(mouse_pos)
         self.on_click(cell)

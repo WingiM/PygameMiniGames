@@ -5,6 +5,7 @@ from constants import LOAD_DIR
 
 
 def load_image(name, colorkey=None):
+    """Загрузка изображения из директории constants.LOAD_DIR"""
     fullname = os.path.join(LOAD_DIR, name)
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")

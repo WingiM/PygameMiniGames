@@ -18,6 +18,8 @@ SUMO_field.rect.x, SUMO_field.rect.y = SUMO_FIELD_COORDS
 
 
 class SumoGame:
+    """Класс игры в Сумо"""
+
     win_sound = load_sound(SUMO_WIN_SOUND)
 
     def __init__(self, screen, player1, player2, sprite_group):
@@ -28,10 +30,12 @@ class SumoGame:
         self.win = False
 
     def render(self):
+        """Прорисовка поля"""
         self.screen.fill((255, 255, 102))
         self.sprite_group.draw(screen)
 
     def update(self, player):
+        """Обновление позиций игроков, их столкновений, а также выход за пределы поля"""
         if not self.win:
             collide = pygame.sprite.collide_mask(self.p1, self.p2)  # Сталкиваются ли игроки друг с другом
             if player == 1:
@@ -52,6 +56,7 @@ class SumoGame:
                     pygame.mixer.Sound.play(SumoGame.win_sound)
 
     def restart(self):
+        """Перезапуск игры"""
         self.p1.rect.x, self.p1.rect.y = self.p1.pos
         self.p2.rect.x, self.p2.rect.y = self.p2.pos
         self.win = False
@@ -59,6 +64,8 @@ class SumoGame:
 
 
 class Player(pygame.sprite.Sprite):
+    """Класс игрока в Сумо"""
+
     image = pygame.transform.scale(load_image(SUMO_PLAYER_IMAGE), SUMO_PLAYER_SCALE)
 
     def __init__(self, *group, pos, transform=None):

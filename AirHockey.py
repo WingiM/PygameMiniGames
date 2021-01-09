@@ -11,6 +11,8 @@ clock = pygame.time.Clock()
 
 
 class AirHockey:
+    """Класс для игры в Аэро Хоккей"""
+
     goal_sound = load_sound(cn.AH_GOAL_SOUND)
     hit_sound = load_sound(cn.AH_HIT_SOUND)
 
@@ -23,6 +25,7 @@ class AirHockey:
         self.caption = 'Аэрохоккей'
 
     def render(self):
+        """Прорисовка поля для игры, клюшек и шайбы"""
         self.screen.fill(self.color)
         # Границы поля
         pygame.draw.rect(self.screen, cn.AH_BORDER_COLOR, (0, 0, cn.WIDTH, cn.HEIGHT), 15)
@@ -40,11 +43,13 @@ class AirHockey:
         self.puck.draw(self.screen)
 
     def restart(self):
+        """Перезапуск игры"""
         self.puck.reset()
         self.s1.reset(cn.AH_STICK1X, cn.AH_STICK1Y)
         self.s2.reset(cn.AH_STICK2X, cn.AH_STICK2Y)
 
-    def goal(self):  # Проверка на попадание в ворота
+    def goal(self):
+        """Проверка на попадание в ворота"""
         return ((self.puck.x - self.puck.radius <= 0)
                 and (self.puck.y >= cn.AH_GOAL_Y1)
                 and (self.puck.y <= cn.AH_GOAL_Y2)) \
@@ -52,7 +57,9 @@ class AirHockey:
                    and (self.puck.y >= cn.AH_GOAL_Y1) and (self.puck.y <= cn.AH_GOAL_Y2))
 
 
-class Stick:  # Клюшки
+class Stick:
+    """Класс для клюшки в игре Аэро Хоккей"""
+
     def __init__(self, color, x, y):
         self.x = x
         self.color = color
@@ -62,47 +69,51 @@ class Stick:  # Клюшки
         self.mass = cn.AH_STICK_MASS
         self.angle = 0
 
-    def check_vertical(self):  # Проверка выхода за границы экрана сверху и снизу
+    def check_vertical(self):
+        """Проверка выхода за границы экрана сверху и снизу"""
         if self.y - self.radius <= 0:
             self.y = self.radius
         elif self.y + self.radius > cn.HEIGHT:
             self.y = cn.HEIGHT - self.radius
 
-    def check_left(self):  # Проверка для левой клюшки
+    def check_left(self):
+        """Проверка для левой клюшки"""
         if self.x - self.radius <= 0:
             self.x = self.radius
         elif self.x + self.radius > cn.WIDTH // 2:
             self.x = cn.WIDTH // 2 - self.radius
 
-    def check_right(self):  # Проверка для правой клюшки
+    def check_right(self):
+        """Проверка для правой клюшки"""
         if self.x + self.radius > cn.WIDTH:
             self.x = cn.WIDTH - self.radius
         elif self.x - self.radius < cn.WIDTH // 2:
             self.x = cn.WIDTH // 2 + self.radius
 
     def draw(self, screen):
+        """Прорисовка клюшки на экране"""
         pos = (int(self.x), int(self.y))
         pygame.draw.circle(screen, self.color, pos, self.radius, 0)
         pygame.draw.circle(screen, (0, 0, 0), pos, self.radius, 5)
         pygame.draw.circle(screen, (0, 0, 0), pos, self.radius - 10, 5)
 
     def reset(self, x, y):
+        """Установление новой позиции для клюшки"""
         self.x = x
         self.y = y
 
     def move(self, up, down, left, right, time):
+        """Перемещение клюшки по полю"""
         dx, dy = self.x, self.y
         self.x += (right - left) * self.speed * time
         self.y += (down - up) * self.speed * time
         dx, dy = self.x - dx, self.y - dy
         self.angle = math.atan2(dy, dx)
 
-    def set_pos(self, x, y):
-        self.x = x
-        self.y = y
 
+class Puck:
+    """Класс для шайбы в игре Аэро Хоккей"""
 
-class Puck:  # Шайба
     def __init__(self, color, x, y):
         self.x, self.y = x, y
         self.color = color
@@ -112,18 +123,21 @@ class Puck:  # Шайба
         self.angle = 0
 
     def move(self, time):
+        """Перемещение шайбу по полю"""
         self.x += math.sin(self.angle) * self.speed * time
         self.y -= math.cos(self.angle) * self.speed * time
 
         self.speed *= cn.AH_FRICTION
 
     def reset(self):
+        """Перемещение шайбы обратно в центр поля"""
         self.angle = 0
         self.speed = cn.AH_PUCK_SPEED
         self.x = cn.WIDTH // 2
         self.y = cn.HEIGHT // 2
 
     def check(self):
+        """Проверка выхода шайбы за границы поля"""
         if self.x + self.radius > cn.WIDTH:
             self.x = 2 * (cn.WIDTH - self.radius) - self.x
             self.angle = -self.angle
@@ -139,14 +153,16 @@ class Puck:  # Шайба
             self.angle = math.pi - self.angle
 
     @staticmethod
-    def add_vector(angle1, len1, angle2, len2):  # Вектора движения
+    def add_vector(angle1, len1, angle2, len2):
+        """Создание вектора для движения шайбы"""
         x = math.sin(angle1) * len1 + math.sin(angle2) * len2
         y = math.cos(angle1) * len1 + math.cos(angle2) * len2
         len0 = math.hypot(x, y)
         angle = math.pi / 2 - math.atan2(y, x)
         return angle, len0
 
-    def check_collision(self, stick):  # Проверка на столкновение с клюшкой
+    def check_collision(self, stick):
+        """Проверка на столкновение с клюшками"""
         dx = self.x - stick.x
         dy = self.y - stick.y
         distance = math.hypot(dx, dy)  # Расстояние между центрами окружностей клюшки и шайбы
@@ -181,9 +197,7 @@ class Puck:  # Шайба
         return True
 
     def draw(self, screen):
+        """Прорисовка шайбы на экране"""
         pos = (int(self.x), int(self.y))
         pygame.draw.circle(screen, self.color, pos, self.radius)
         pygame.draw.circle(screen, cn.COLORS['grey'], pos, self.radius - 10)
-
-    def get_pos(self):
-        return self.x, self.y
