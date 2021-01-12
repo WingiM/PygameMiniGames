@@ -258,22 +258,3 @@ class SeaBattleBoard(Board):
         if any([self.p1_is_empty, self.p2_is_empty]):
             self.active = False
             self.caption = 'Морской Бой (игра не активна)'
-
-
-if __name__ == '__main__':
-    game = SeaBattleBoard(screen)
-    game.set_view((WIDTH - game.width * SB_CELL_SIZE) // 2,
-                  (HEIGHT - game.height * SB_CELL_SIZE) // 2, SB_CELL_SIZE)
-    running = True
-    while running:
-        pygame.display.set_caption(game.caption)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                game.get_click(event.pos)
-
-        screen.fill((0, 0, 0))
-        game.render()
-
-        pygame.display.flip()
