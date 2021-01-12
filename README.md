@@ -1,5 +1,5 @@
 # PygameMiniGames
-Pygame project for Yandex Lyceum 2020-2021. Includes 5 mini-games: Airhockey, Sea Battle, Tic Tac Toe, Sumo and Steal The Diamond
+Pygame project for Yandex Lyceum 2020-2021. Includes 5 mini-games for two players: Airhockey, Sea Battle, Tic Tac Toe, Sumo and Steal The Diamond
 
 To install all required libraries use "pip install -r requirements.txt" command in cmd.exe (Windows)
 

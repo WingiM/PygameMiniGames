@@ -125,14 +125,14 @@ def load_arrangement(filename) -> tuple:
                 is_empty = True
                 arrangement = [list('.' * 10) for _ in range(10)]
     except FileNotFoundError:
-        print(f'Файл {filename} не найден')
-        exit(0)
+        print(f'Файл {filename} не найден. Игра в Морской Бой не активна.')
+        return [list('.' * 10) for _ in range(10)], [], True
 
     ship_map = create_ship_map(arrangement, filename)
 
     if not check_arrangement(arrangement, ship_map):
-        print(f'Ошибка в расстановке {filename}')
-        exit(0)
+        print(f'Ошибка в расстановке {filename}. Игра в Морской Бой не активна.')
+        return [list('.' * 10) for _ in range(10)], [], True
 
     return arrangement, ship_map, is_empty
 
@@ -148,6 +148,7 @@ class SeaBattleBoard(Board):
         super().__init__(10, 10, screen)
         self.caption = 'Морской Бой'
         self.won = False
+        self.active = True
         self.screen = screen
         self.cooldown = 0
         self.p1, self.p1_ship_map, self.p1_is_empty = load_arrangement(SB_PLAYER1_FILENAME)
@@ -156,7 +157,8 @@ class SeaBattleBoard(Board):
         self.map = self.p2_ship_map
         self.font = pygame.font.Font(None, SB_CELL_SIZE)
         if any([self.p1_is_empty, self.p2_is_empty]):
-            self.caption = 'Морской Бой (у одного из игроков пустое поле)'
+            self.active = False
+            self.caption = 'Морской Бой (игра не активна)'
 
     def render(self):
         """Прорисовка поля для игры"""
@@ -198,7 +200,7 @@ class SeaBattleBoard(Board):
 
     def on_click(self, cell):
         """Совершает действие по нажатию кнопки мыши пользователем"""
-        if cell and not self.cooldown and not self.won:
+        if cell and not self.cooldown and not self.won and self.active:
             x, y = cell
             # Если игрок промахивается, то ход передается следующему после "перезарядки"
             if self.board[y][x] == '.':
@@ -253,6 +255,9 @@ class SeaBattleBoard(Board):
         self.won = False
         self.board = self.p2
         self.map = self.p2_ship_map
+        if any([self.p1_is_empty, self.p2_is_empty]):
+            self.active = False
+            self.caption = 'Морской Бой (игра не активна)'
 
 
 if __name__ == '__main__':
